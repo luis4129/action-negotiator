@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Negociador de Ações</title>
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	    <a class="navbar-brand" href="/">Navbar</a>
+	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    	<span class="navbar-toggler-icon"></span>
+	  	</button>
+	
+	  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    	<ul class="navbar-nav mr-auto">
+	      		<li class="nav-item">
+	        		<a class="nav-link" href="account">Contas</a>
+	      		</li>
+	      		<li class="nav-item">
+	        		<a class="nav-link" href="company">Empresas</a>
+	      		</li>
+	      		<li class="nav-item">
+	        		<a class="nav-link" href="investmentRule">Regras de Investimento</a>
+	      		</li>
+	    	</ul>
+	  </div>
+	</nav>
+	
+	<div class="container">
+	
+		<div id="investment-rule-list">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Valor</th>
+					</tr>
+				</thead>
+				<tr th:each="investmentRule : ${investmentRules}">
+					<td><span th:text="${investmentRule.name}"></span></td>
+					<td><span th:text="${investmentRule.value}"></span></td>
+				</tr>
+
+			</table>
+		</div>
+		
+		<hr/>
+	
+		<form action="investmentRule/save">
+		
+			<br>
+			
+			<select id="investment-rule-account" name="investment-rule-account" class="custom-select">
+			  <option selected value="">Selecione uma conta para a regra</option>
+			  <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.email}"></option>
+			</select>
+			
+			<br>
+			
+			<select id="investment-rule-company" name="investment-rule-company" class="custom-select">
+			  <option selected value="">Selecione a empresa a ser monitorada</option>
+			  <option th:each="company : ${companys}" th:value="${company.id}" th:text="${company.name}"></option>
+			</select>
+			
+			<br>
+		
+			<div class="form-group">
+		    	<label for="investment-rule-purchase-value">Valor de compra</label>
+		    	<input type="number" class="form-control" id="investment-rule-purchase-value" name="investment-rule-purchase-value" step="0.01" placeholder="Valor máximo na quão as ações serão compradas">
+			</div>
+			<div class="form-group">
+		    	<label for="investment-rule-sale-value">Valor de venda</label>
+		    	<input type="number" class="form-control" id="investment-rule-sale-value" name="investment-rule-sale-value" step="0.01" placeholder="Valor mínimo nas quais as ações serão vendidas">
+		  	</div>
+		  	<button type="submit" class="btn btn-primary">Salvar</button>
+		</form>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>
