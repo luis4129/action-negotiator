@@ -1,15 +1,15 @@
 package br.com.actionnegotiator.service;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.actionnegotiator.model.Account;
-import br.com.actionnegotiator.model.Stock;
 import br.com.actionnegotiator.model.Company;
 import br.com.actionnegotiator.model.InvestmentRule;
+import br.com.actionnegotiator.model.Stock;
 
 @Service
 public class MonitorService {
@@ -32,7 +32,8 @@ public class MonitorService {
 			}
 
 			if (saleCheck(company.getValue(), investmentRule.getSalePrice())) {
-				for (Stock stock : stockService.findAllByAccount(investmentRule.getAccount())) {
+				Hibernate.initialize(investmentRule.getAccount().getStocks());
+				for (Stock stock : investmentRule.getAccount().getStocks()) {
 					if (stock.getCompany().getId().equals(company.getId())) {
 						stockService.sellStock(stock);
 					}

@@ -12,17 +12,17 @@ public class InvestmentRule {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 
 	@ManyToOne
-	Account account;
+	private Account account;
 
 	@ManyToOne
-	Company company;
+	private Company company;
 
-	BigDecimal purchasePrice;
+	private BigDecimal purchasePrice;
 
-	BigDecimal salePrice;
+	private BigDecimal salePrice;
 
 	public InvestmentRule() {
 

@@ -13,14 +13,14 @@ public class Company {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 
 	@OneToMany
-	Collection<Stock> stock;
+	private Collection<Stock> stock;
 
-	String name;
+	private String name;
 
-	BigDecimal value;
+	private BigDecimal value;
 
 	public Company() {
 

@@ -14,15 +14,15 @@ public class Stock {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	Account account;
+	private Account account;
 
 	@ManyToOne
-	Company company;
+	private Company company;
 
-	BigDecimal quantity;
+	private BigDecimal quantity;
 
 	public Stock() {
 

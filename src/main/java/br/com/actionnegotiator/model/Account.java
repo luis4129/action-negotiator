@@ -15,20 +15,20 @@ public class Account {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 
-	String email;
+	private String email;
 
-	BigDecimal fund;
-
-	@OneToMany
-	Collection<Transaction> transstock;
+	private BigDecimal fund;
 
 	@OneToMany
-	Collection<InvestmentRule> investmentRule;
+	private Collection<Transaction> transstock;
+
+	@OneToMany
+	private Collection<InvestmentRule> investmentRule;
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	Collection<Stock> stock;
+	private Collection<Stock> stocks;
 
 	public Account() {
 
@@ -63,11 +63,11 @@ public class Account {
 		this.fund = fund;
 	}
 
-	public Collection<Transaction> getTransaction() {
+	public Collection<Transaction> getTransstock() {
 		return transstock;
 	}
 
-	public void setTransaction(Collection<Transaction> transstock) {
+	public void setTransstock(Collection<Transaction> transstock) {
 		this.transstock = transstock;
 	}
 
@@ -79,12 +79,12 @@ public class Account {
 		this.investmentRule = investmentRule;
 	}
 
-	public Collection<Stock> getStock() {
-		return stock;
+	public Collection<Stock> getStocks() {
+		return stocks;
 	}
 
-	public void setStock(Collection<Stock> stock) {
-		this.stock = stock;
-	}
-
+	public void setStocks(Collection<Stock> stocks) {
+		this.stocks = stocks;
+	}	
+	
 }

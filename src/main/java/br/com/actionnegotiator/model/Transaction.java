@@ -13,21 +13,21 @@ public class Transaction {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 
 	@ManyToOne
-	Account account;
+	private Account account;
 
 	@ManyToOne
-	Company company;
+	private Company company;
 
-	Calendar createdIn;
+	private Calendar createdIn;
 
-	BigDecimal value;
+	private BigDecimal value;
 
-	BigDecimal quantity;
+	private BigDecimal quantity;
 
-	TransactionType type;
+	private TransactionType type;
 
 	public Transaction() {
 
