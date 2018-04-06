@@ -10,25 +10,25 @@ import br.com.actionnegotiator.repository.CompanyRepository;
 
 @Service
 public class CompanyService {
-	
+
 	@Autowired
 	private CompanyRepository repository;
-	
+
 	@Autowired
 	private MonitorService monitorService;
-	
-	public Iterable<Company> findAll(){		
-		return repository.findAll();		
-	}	
-	
-	public void save(Company company){
+
+	public Iterable<Company> findAll() {
+		return repository.findAll();
+	}
+
+	public void save(Company company) {
 		repository.save(company);
 		monitorService.monitor(company);
 	}
-	
-	public void save(String name, BigDecimal value){
-		Company company = new Company(name, value);		
+
+	public void save(String name, BigDecimal value) {
+		Company company = new Company(name, value);
 		this.save(company);
 	}
-	
+
 }

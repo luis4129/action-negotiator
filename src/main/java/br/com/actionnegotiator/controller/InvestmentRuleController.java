@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.actionnegotiator.model.InvestmentRule;
 import br.com.actionnegotiator.service.AccountService;
 import br.com.actionnegotiator.service.CompanyService;
 import br.com.actionnegotiator.service.InvestmentRuleService;
@@ -16,16 +15,16 @@ import br.com.actionnegotiator.service.InvestmentRuleService;
 @Controller
 @RequestMapping("/investmentRule*")
 public class InvestmentRuleController {
-	
+
 	@Autowired
 	InvestmentRuleService investmentRuleService;
-	
+
 	@Autowired
 	AccountService accountService;
-	
+
 	@Autowired
 	CompanyService companyService;
-	
+
 	@RequestMapping("")
 	public String investmentRule(Model model) {
 		model.addAttribute("accounts", accountService.findAll());
@@ -33,13 +32,14 @@ public class InvestmentRuleController {
 		model.addAttribute("investmentRules", investmentRuleService.findAll());
 		return "investmentRule";
 	}
-	
+
 	@RequestMapping("/save")
-	public String save(@RequestParam("investmentRule-email") String email, @RequestParam("investmentRule-fund") BigDecimal fund) {
-		investmentRuleService.save(email, fund);
+	public String save(@RequestParam("investment-rule-account") Long accountId,
+			@RequestParam("investment-rule-company") Long companyId,
+			@RequestParam("investment-rule-purchase-price") BigDecimal purchasePrice,
+			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) {
+		investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
 		return "redirect:/investmentRule";
 	}
-	
-	
 
 }

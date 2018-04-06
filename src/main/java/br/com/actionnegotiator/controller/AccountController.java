@@ -14,23 +14,21 @@ import br.com.actionnegotiator.service.AccountService;
 @Controller
 @RequestMapping("/account*")
 public class AccountController {
-	
+
 	@Autowired
 	AccountService accountService;
-	
+
 	@RequestMapping("")
 	public String account(Model model) {
 		Iterable<Account> accounts = accountService.findAll();
 		model.addAttribute("accounts", accounts);
 		return "account";
 	}
-	
+
 	@RequestMapping("/save")
 	public String save(@RequestParam("account-email") String email, @RequestParam("account-fund") BigDecimal fund) {
 		accountService.save(email, fund);
 		return "redirect:/account";
 	}
-	
-	
 
 }

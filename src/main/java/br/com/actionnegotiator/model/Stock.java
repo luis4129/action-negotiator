@@ -9,28 +9,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
-public class Action{
-	
+public class Stock {
+
 	@Id
 	@GeneratedValue
 	Long id;
-	
-	@ManyToOne(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	Account account;
-	
+
 	@ManyToOne
 	Company company;
-	
+
 	BigDecimal quantity;
-	
-	public Action() {
-		
+
+	public Stock() {
+
 	}
-	
-	public Action(Account account, Company company, BigDecimal quantity) {
+
+	public Stock(Account account, Company company, BigDecimal quantity) {
 		setAccount(account);
 		setCompany(company);
 		setQuantity(quantity);

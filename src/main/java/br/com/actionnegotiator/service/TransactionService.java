@@ -13,17 +13,18 @@ import br.com.actionnegotiator.repository.TransactionRepository;
 
 @Service
 public class TransactionService {
-	
+
 	@Autowired
 	private TransactionRepository repository;
-	
-	public void save(Transaction transaction){
+
+	public void save(Transaction transaction) {
 		repository.save(transaction);
 	}
-	
-	public void registerTransaction(TransactionType transactionType, Account account, Company company, BigDecimal value, BigDecimal quantity) {
+
+	public void registerTransaction(TransactionType transactionType, Account account, Company company, BigDecimal value,
+			BigDecimal quantity) {
 		Transaction transaction = new Transaction(transactionType, account, company, value, quantity);
 		this.save(transaction);
 	}
-	
+
 }

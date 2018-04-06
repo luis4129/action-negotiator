@@ -10,27 +10,27 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Company {
-	
+
 	@Id
 	@GeneratedValue
 	Long id;
-	
+
 	@OneToMany
-	Collection<Action> action;
-	
+	Collection<Stock> stock;
+
 	String name;
-	
+
 	BigDecimal value;
-	
+
 	public Company() {
-		
+
 	}
-	
+
 	public Company(String name, BigDecimal value) {
 		this.setName(name);
 		this.setValue(value);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -55,14 +55,12 @@ public class Company {
 		this.value = value;
 	}
 
-	public Collection<Action> getAction() {
-		return action;
+	public Collection<Stock> getStock() {
+		return stock;
 	}
 
-	public void setAction(Collection<Action> action) {
-		this.action = action;
+	public void setStock(Collection<Stock> stock) {
+		this.stock = stock;
 	}
-	
-	
 
 }

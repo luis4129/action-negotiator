@@ -14,26 +14,27 @@ public class Transaction {
 	@Id
 	@GeneratedValue
 	Long id;
-	
+
 	@ManyToOne
 	Account account;
-	
+
 	@ManyToOne
 	Company company;
-	
+
 	Calendar createdIn;
-	
+
 	BigDecimal value;
-	
+
 	BigDecimal quantity;
-	
-	TransactionType type;	
-	
+
+	TransactionType type;
+
 	public Transaction() {
-		
+
 	}
-	
-	public Transaction(TransactionType transactionType, Account account, Company company, BigDecimal value, BigDecimal quantity) {
+
+	public Transaction(TransactionType transactionType, Account account, Company company, BigDecimal value,
+			BigDecimal quantity) {
 		setType(transactionType);
 		setAccount(account);
 		setCompany(company);
@@ -97,5 +98,5 @@ public class Transaction {
 	public void setType(TransactionType type) {
 		this.type = type;
 	}
-	
+
 }

@@ -9,22 +9,21 @@ import br.com.actionnegotiator.model.Company;
 
 @Service
 public class SimulationService {
-	
+
 	@Autowired
 	private CompanyService companyService;
-	
-	public void simulate() throws InterruptedException{
-		
+
+	public void executeSimulation() throws InterruptedException {
+
 		Iterable<Company> companys = companyService.findAll();
-		
+
 		for (int i = 0; i < 100; i++) {
 			for (Company company : companys) {
 				company.setValue(BigDecimal.valueOf(10 + (Math.random())));
 				companyService.save(company);
-			}			
-			//Thread.sleep(5000);
+			}
+			Thread.sleep(5000);
 		}
 	}
-	
-	
+
 }

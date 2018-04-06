@@ -10,30 +10,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
 public class Account {
-	
+
 	@Id
 	@GeneratedValue
 	Long id;
-	
+
 	String email;
-	
+
 	BigDecimal fund;
-	
+
 	@OneToMany
-	Collection<Transaction> transaction;
-	
+	Collection<Transaction> transstock;
+
 	@OneToMany
 	Collection<InvestmentRule> investmentRule;
-	
-	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-	Collection<Action> action;
-	
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	Collection<Stock> stock;
+
 	public Account() {
-		
+
 	}
 
 	public Account(String email, BigDecimal fund) {
@@ -66,11 +64,11 @@ public class Account {
 	}
 
 	public Collection<Transaction> getTransaction() {
-		return transaction;
+		return transstock;
 	}
 
-	public void setTransaction(Collection<Transaction> transaction) {
-		this.transaction = transaction;
+	public void setTransaction(Collection<Transaction> transstock) {
+		this.transstock = transstock;
 	}
 
 	public Collection<InvestmentRule> getInvestmentRule() {
@@ -81,12 +79,12 @@ public class Account {
 		this.investmentRule = investmentRule;
 	}
 
-	public Collection<Action> getAction() {
-		return action;
+	public Collection<Stock> getStock() {
+		return stock;
 	}
 
-	public void setAction(Collection<Action> action) {
-		this.action = action;
+	public void setStock(Collection<Stock> stock) {
+		this.stock = stock;
 	}
-	
+
 }

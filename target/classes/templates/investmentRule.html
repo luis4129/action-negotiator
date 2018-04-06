@@ -8,7 +8,7 @@
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	    <a class="navbar-brand" href="/">Navbar</a>
+	    <a class="navbar-brand" href="/">Início</a>
 	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    	<span class="navbar-toggler-icon"></span>
 	  	</button>
@@ -24,6 +24,9 @@
 	      		<li class="nav-item">
 	        		<a class="nav-link" href="investmentRule">Regras de Investimento</a>
 	      		</li>
+	      		<li class="nav-item">
+	        		<a class="nav-link" href="simulation">Simulação</a>
+	      		</li>
 	    	</ul>
 	  </div>
 	</nav>
@@ -34,13 +37,17 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>Nome</th>
-						<th>Valor</th>
+						<th>Conta</th>
+						<th>Empresa</th>
+						<th>Preço de Compra</th>
+						<th>Preço de Venda</th>
 					</tr>
 				</thead>
 				<tr th:each="investmentRule : ${investmentRules}">
-					<td><span th:text="${investmentRule.name}"></span></td>
-					<td><span th:text="${investmentRule.value}"></span></td>
+					<td><span th:text="${investmentRule.account.email}"></span></td>
+					<td><span th:text="${investmentRule.company.name}"></span></td>
+					<td><span th:text="${investmentRule.purchasePrice}"></span></td>
+					<td><span th:text="${investmentRule.salePrice}"></span></td>
 				</tr>
 
 			</table>
@@ -49,32 +56,31 @@
 		<hr/>
 	
 		<form action="investmentRule/save">
-		
-			<br>
 			
-			<select id="investment-rule-account" name="investment-rule-account" class="custom-select">
-			  <option selected value="">Selecione uma conta para a regra</option>
-			  <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.email}"></option>
-			</select>
-			
-			<br>
-			
-			<select id="investment-rule-company" name="investment-rule-company" class="custom-select">
-			  <option selected value="">Selecione a empresa a ser monitorada</option>
-			  <option th:each="company : ${companys}" th:value="${company.id}" th:text="${company.name}"></option>
-			</select>
-			
-			<br>
-		
 			<div class="form-group">
-		    	<label for="investment-rule-purchase-value">Valor de compra</label>
-		    	<input type="number" class="form-control" id="investment-rule-purchase-value" name="investment-rule-purchase-value" step="0.01" placeholder="Valor máximo na quão as ações serão compradas">
+				<label for="investment-rule-account">Conta</label>
+				<select id="investment-rule-account" name="investment-rule-account" class="custom-select" required>
+				  <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.email}"></option>
+				</select>
 			</div>
+			
 			<div class="form-group">
-		    	<label for="investment-rule-sale-value">Valor de venda</label>
-		    	<input type="number" class="form-control" id="investment-rule-sale-value" name="investment-rule-sale-value" step="0.01" placeholder="Valor mínimo nas quais as ações serão vendidas">
+				<label for="investment-rule-company">Empresa</label>
+				<select id="investment-rule-company" name="investment-rule-company" class="custom-select" required>
+				  <option th:each="company : ${companys}" th:value="${company.id}" th:text="${company.name}"></option>
+				</select>				
+			</div>
+			
+		
+			<div class="form-group">
+		    	<label for="investment-rule-purchase-price">Valor de compra</label>
+		    	<input type="number" class="form-control" id="investment-rule-purchase-price" name="investment-rule-purchase-price" step="0.01" placeholder="Valor máximo na quão as ações serão compradas">
+			</div>
+			<div class="form-group">	
+		    	<label for="investment-rule-sale-price">Valor de venda</label>
+		    	<input type="number" class="form-control" id="investment-rule-sale-price" name="investment-rule-sale-price" step="0.01" placeholder="Valor mínimo nas quais as ações serão vendidas">
 		  	</div>
-		  	<button type="submit" class="btn btn-primary">Salvar</button>
+		  	<button type="submit" class="btn btn-dark">Salvar</button>
 		</form>
 	</div>
 	

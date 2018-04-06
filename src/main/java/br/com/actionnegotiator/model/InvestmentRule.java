@@ -9,20 +9,31 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class InvestmentRule {
-	
+
 	@Id
 	@GeneratedValue
 	Long id;
-	
+
 	@ManyToOne
 	Account account;
-	
+
 	@ManyToOne
 	Company company;
-	
+
 	BigDecimal purchasePrice;
-	
+
 	BigDecimal salePrice;
+
+	public InvestmentRule() {
+
+	}
+
+	public InvestmentRule(Account account, Company company, BigDecimal purchasePrice, BigDecimal salePrice) {
+		setAccount(account);
+		setCompany(company);
+		setPurchasePrice(purchasePrice);
+		setSalePrice(salePrice);
+	}
 
 	public Long getId() {
 		return id;
@@ -63,5 +74,5 @@ public class InvestmentRule {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
+
 }

@@ -14,23 +14,21 @@ import br.com.actionnegotiator.service.CompanyService;
 @Controller
 @RequestMapping("/company*")
 public class CompanyController {
-	
+
 	@Autowired
 	CompanyService companyService;
-	
+
 	@RequestMapping("")
 	public String Company(Model model) {
 		Iterable<Company> companys = companyService.findAll();
 		model.addAttribute("companys", companys);
 		return "company";
 	}
-	
+
 	@RequestMapping("/save")
 	public String save(@RequestParam("company-name") String name, @RequestParam("company-value") BigDecimal value) {
 		companyService.save(name, value);
 		return "redirect:/company";
 	}
-	
-	
 
 }
