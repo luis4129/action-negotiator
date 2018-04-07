@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.model.Company;
 import br.com.actionnegotiator.model.Stock;
-import br.com.actionnegotiator.model.Transaction;
 import br.com.actionnegotiator.model.TransactionType;
 import br.com.actionnegotiator.repository.StockRepository;
 
@@ -17,17 +17,17 @@ import br.com.actionnegotiator.repository.StockRepository;
 public class StockService {
 
 	@Autowired
-	private StockRepository repository;
+	private StockRepository stockRepository;
 
 	@Autowired
 	private TransactionService transactionService;
 
-	public void save(Stock stock) {
-		repository.save(stock);
+	public void save(Stock stock) throws DataIntegrityViolationException {
+		stockRepository.save(stock);
 	}
 
 	public void delete(Stock stock) {
-		repository.delete(stock);
+		stockRepository.delete(stock);
 	}
 
 	public void purchaseStock(Account account, Company company) {

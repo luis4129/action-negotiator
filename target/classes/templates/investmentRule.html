@@ -28,7 +28,7 @@
 	        		<a class="nav-link" href="simulation">Simulação</a>
 	      		</li>
 	      		<li class="nav-item">
-	        		<a class="nav-link" href="simulation">Histórico de Transações</a>
+	        		<a class="nav-link" href="transaction">Histórico de Transações</a>
 	      		</li>
 	    	</ul>
 	  </div>
@@ -37,9 +37,10 @@
 	<div class="container">
 	
 		<div id="investment-rule-list">
-			<table class="table table-hover">
+			<table id="investment-rule-table" class="table table-hover">
 				<thead>
 					<tr>
+						<th hidden>Id</th>
 						<th>Conta</th>
 						<th>Empresa</th>
 						<th>Preço de Compra</th>
@@ -47,6 +48,7 @@
 					</tr>
 				</thead>
 				<tr th:each="investmentRule : ${investmentRules}">
+					<td hidden><span th:text="${investmentRule.id}"></span></td>
 					<td><span th:text="${investmentRule.account.email}"></span></td>
 					<td><span th:text="${investmentRule.company.name}"></span></td>
 					<td><span th:text="${investmentRule.purchasePrice}"></span></td>
@@ -56,39 +58,68 @@
 			</table>
 		</div>
 		
-		<hr/>
-	
-		<form action="investmentRule/save">
-			
-			<div class="form-group">
-				<label for="investment-rule-account">Conta</label>
-				<select id="investment-rule-account" name="investment-rule-account" class="custom-select" required>
-				  <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.email}"></option>
-				</select>
-			</div>
-			
-			<div class="form-group">
-				<label for="investment-rule-company">Empresa</label>
-				<select id="investment-rule-company" name="investment-rule-company" class="custom-select" required>
-				  <option th:each="company : ${companys}" th:value="${company.id}" th:text="${company.name}"></option>
-				</select>				
-			</div>
+		<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Cadastrar</button>
+		<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Alterar</button>
 			
 		
-			<div class="form-group">
-		    	<label for="investment-rule-purchase-price">Valor de compra</label>
-		    	<input type="number" class="form-control" id="investment-rule-purchase-price" name="investment-rule-purchase-price" step="0.01" placeholder="Valor máximo na quão as ações serão compradas">
-			</div>
-			<div class="form-group">	
-		    	<label for="investment-rule-sale-price">Valor de venda</label>
-		    	<input type="number" class="form-control" id="investment-rule-sale-price" name="investment-rule-sale-price" step="0.01" placeholder="Valor mínimo nas quais as ações serão vendidas">
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  	<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+		    	
+		    		<form action="investmentRule/save">
+		    		
+		    			<div class="modal-header">
+			        		<h5 class="modal-title" id="exampleModalLabel">Regra de Investimento</h5>
+			        		<button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+			          			<span aria-hidden="true">&times;</span>
+			        		</button>
+			      		</div>				
+					
+			      		<div class="modal-body">
+			        		<div hidden class="form-group">
+						    	<input type="number" class="form-control" id="investment-rule-id" name="investment-rule-id">
+							</div>
+							
+							<div class="form-group">
+								<label for="investment-rule-account">Conta</label>
+								<select id="investment-rule-account" name="investment-rule-account" class="custom-select" required>
+								  <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.email}"></option>
+								</select>
+							</div>
+							
+							<div class="form-group">
+								<label for="investment-rule-company">Empresa</label>
+								<select id="investment-rule-company" name="investment-rule-company" class="custom-select" required>
+								  <option th:each="company : ${companys}" th:value="${company.id}" th:text="${company.name}"></option>
+								</select>				
+							</div>			
+						
+							<div class="form-group">
+						    	<label for="investment-rule-purchase-price">Valor de compra</label>
+						    	<input type="number" class="form-control" id="investment-rule-purchase-price" name="investment-rule-purchase-price" step="0.01" placeholder="Valor máximo na quão as ações serão compradas" required>
+							</div>
+							
+							<div class="form-group">	
+						    	<label for="investment-rule-sale-price">Valor de venda</label>
+						    	<input type="number" class="form-control" id="investment-rule-sale-price" name="investment-rule-sale-price" step="0.01" placeholder="Valor mínimo nas quais as ações serão vendidas" required>
+						  	</div>
+			      		</div>
+			      		
+			      		<div class="modal-footer">
+			        		<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        		<button type="submit" class="btn btn-dark">Salvar</button>
+			      		</div>
+			      		
+		      		</form>
+		    	</div>
 		  	</div>
-		  	<button type="submit" class="btn btn-dark">Salvar</button>
-		</form>
+		</div>
+		
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="js/investmentRule.js"></script>
 
 </body>
 </html>

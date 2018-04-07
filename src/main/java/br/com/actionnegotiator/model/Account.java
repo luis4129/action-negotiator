@@ -7,16 +7,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(uniqueConstraints={
+	    @UniqueConstraint(columnNames = {"email"})
+})
 public class Account {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	@NotNull
 	private String email;
 
+	@NotNull
 	private BigDecimal fund;
 
 	@OneToMany(mappedBy="account")
@@ -26,7 +34,7 @@ public class Account {
 	private Collection<InvestmentRule> investmentRule;
 
 	@OneToMany(mappedBy="account")
-	private Collection<Stock> stocks;
+	private Collection<Stock> stock;
 
 	public Account() {
 
@@ -77,12 +85,12 @@ public class Account {
 		this.investmentRule = investmentRule;
 	}
 
-	public Collection<Stock> getStocks() {
-		return stocks;
+	public Collection<Stock> getStock() {
+		return stock;
 	}
 
-	public void setStocks(Collection<Stock> stocks) {
-		this.stocks = stocks;
+	public void setStock(Collection<Stock> stock) {
+		this.stock = stock;
 	}	
 	
 }

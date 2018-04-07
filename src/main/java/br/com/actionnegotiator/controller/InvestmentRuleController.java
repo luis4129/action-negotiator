@@ -3,6 +3,7 @@ package br.com.actionnegotiator.controller;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,11 @@ public class InvestmentRuleController {
 			@RequestParam("investment-rule-company") Long companyId,
 			@RequestParam("investment-rule-purchase-price") BigDecimal purchasePrice,
 			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) {
-		investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
+		try {
+			investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
+		} catch (DataIntegrityViolationException e) {
+			e.printStackTrace();
+		}
 		return "redirect:/investmentRule";
 	}
 

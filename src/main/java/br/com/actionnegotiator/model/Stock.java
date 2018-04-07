@@ -8,18 +8,26 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(uniqueConstraints={
+	    @UniqueConstraint(columnNames = {"account_id", "company_id"})
+})
 public class Stock {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@NotNull
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Account account;
 
-	@ManyToOne
+	@NotNull
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Company company;
 
 	private BigDecimal quantity;

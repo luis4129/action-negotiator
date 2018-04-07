@@ -1,16 +1,12 @@
 package br.com.actionnegotiator.service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.model.Company;
-import br.com.actionnegotiator.model.InvestmentRule;
 import br.com.actionnegotiator.model.Transaction;
 import br.com.actionnegotiator.model.TransactionType;
 import br.com.actionnegotiator.repository.TransactionRepository;
@@ -19,13 +15,13 @@ import br.com.actionnegotiator.repository.TransactionRepository;
 public class TransactionService {
 
 	@Autowired
-	private TransactionRepository repository;
+	private TransactionRepository transactionRepository;
 	
 	@Autowired
 	private EmailService emailService;
 
 	public void save(Transaction transaction) {
-		repository.save(transaction);
+		transactionRepository.save(transaction);
 		emailService.notify(transaction);
 	}
 
@@ -36,15 +32,15 @@ public class TransactionService {
 	}
 
 	public Iterable<Transaction> findAll() {
-		return repository.findByOrderByCreatedInDesc();
+		return transactionRepository.findByOrderByCreatedInDesc();
 	}
 	
 	public Iterable<Transaction> findAllRecent() {
-		return repository.findByRecentOrderByCreatedInDesc(true);
+		return transactionRepository.findByRecentOrderByCreatedInDesc(true);
 	}
 	
 	public void setAllRecentToFalse() {
-		repository.setAllRecentToFalse();
+		transactionRepository.setAllRecentToFalse();
 	}
 	
 }

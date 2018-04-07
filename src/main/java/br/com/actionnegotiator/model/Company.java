@@ -7,19 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(uniqueConstraints={
+	    @UniqueConstraint(columnNames = {"name"})
+})
 public class Company {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@OneToMany
+	@OneToMany(mappedBy="company")
 	private Collection<Stock> stock;
 
+	@NotNull
 	private String name;
 
+	@NotNull
 	private BigDecimal value;
 
 	public Company() {

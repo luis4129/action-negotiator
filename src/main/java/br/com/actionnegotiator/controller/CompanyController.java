@@ -3,6 +3,7 @@ package br.com.actionnegotiator.controller;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,11 @@ public class CompanyController {
 
 	@RequestMapping("/save")
 	public String save(@RequestParam("company-name") String name, @RequestParam("company-value") BigDecimal value) {
-		companyService.save(name, value);
+		try {
+			companyService.save(name, value);
+		} catch (DataIntegrityViolationException e) {
+			e.printStackTrace();
+		}
 		return "redirect:/company";
 	}
 

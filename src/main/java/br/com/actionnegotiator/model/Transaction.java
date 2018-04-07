@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Transaction {
@@ -17,18 +18,24 @@ public class Transaction {
 	@GeneratedValue
 	private Long id;
 
+	@NotNull
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Account account;
 
-	@ManyToOne
+	@NotNull
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Company company;
 
+	@NotNull
 	private Calendar createdIn;
 
+	@NotNull
 	private BigDecimal value;
 
+	@NotNull
 	private BigDecimal quantity;
 
+	@NotNull
 	private TransactionType type;
 	
 	private Boolean recent;

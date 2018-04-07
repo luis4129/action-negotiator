@@ -2,6 +2,7 @@ package br.com.actionnegotiator.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import br.com.actionnegotiator.model.Transaction;
 public class EmailService {
 	
 	@Autowired
-	private JavaMailSender mailSender;
+	private JavaMailSender javaMailSender;
 	
 	public void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -26,11 +27,11 @@ public class EmailService {
         message.setSubject(subject);
         message.setFrom("action.negotiator@gmail.com");
 
-        try {
-            mailSender.send(message);
+        /*try {
+        	javaMailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 	
 	public void notify(Transaction transaction) {		
@@ -70,19 +71,12 @@ public class EmailService {
 	}
 	
 	public String getSubject(Calendar createdIn) {
-		StringBuilder subject = new StringBuilder();
-		subject.append("Transação realizada em ");
-		subject.append(createdIn.get(Calendar.DAY_OF_MONTH));
-		subject.append("/");
-		subject.append(createdIn.get(Calendar.MONTH));
-		subject.append("/");
-		subject.append(createdIn.get(Calendar.YEAR));
-		subject.append(" ");
-		subject.append(createdIn.get(Calendar.HOUR_OF_DAY));
-		subject.append(":");
-		subject.append(createdIn.get(Calendar.MINUTE));
-		subject.append(":");
-		subject.append(createdIn.get(Calendar.SECOND));
+		StringBuilder subject = new StringBuilder();		
+		subject.append("Transação realizada em ");	
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		subject.append(sdf.format(createdIn.getTime()));
+		
 		return subject.toString();
 	}
 	

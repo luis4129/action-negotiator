@@ -3,6 +3,7 @@ package br.com.actionnegotiator.service;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.actionnegotiator.model.Account;
@@ -15,20 +16,20 @@ import br.com.actionnegotiator.repository.InvestmentRuleRepository;
 public class InvestmentRuleService {
 
 	@Autowired
-	private InvestmentRuleRepository repository;
+	private InvestmentRuleRepository investmentRuleRepository;
 	
 	@Autowired
 	private StockService stockService;
 
 	public Iterable<InvestmentRule> findAll() {
-		return repository.findAll();
+		return investmentRuleRepository.findAll();
 	}
 
-	public void save(InvestmentRule investmentRule) {
-		repository.save(investmentRule);
+	public void save(InvestmentRule investmentRule) throws DataIntegrityViolationException {
+		investmentRuleRepository.save(investmentRule);
 	}
 
-	public void save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) {
+	public void save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DataIntegrityViolationException {
 		Account account = new Account();
 		account.setId(accountId);
 
@@ -40,22 +41,26 @@ public class InvestmentRuleService {
 	}
 
 	public Iterable<InvestmentRule> findAllByCompany(Company company) {
-		return repository.findAllByCompany(company);
+		return investmentRuleRepository.findAllByCompany(company);
 	}
 
 	public void monitor(Company company) {
 		for (InvestmentRule investmentRule : this.findAllByCompany(company)) {
 
+			System.out.println(company.getName() + " - " + company.getValue());
+			
 			if (purchaseCheck(company.getValue(), investmentRule.getPurchasePrice())) {
 				Account account = investmentRule.getAccount();
 				if (!account.getFund().equals(BigDecimal.ZERO)) {
+					System.out.println("BOUGHT");
 					stockService.purchaseStock(account, company);
 				}
 			}
 
 			if (saleCheck(company.getValue(), investmentRule.getSalePrice())) {
-				for (Stock stock : investmentRule.getAccount().getStocks()) {
+				for (Stock stock : investmentRule.getAccount().getStock()) {
 					if (stock.getCompany().getId().equals(company.getId())) {
+						System.out.println("SOLD");
 						stockService.sellStock(stock);
 					}
 				}				
@@ -63,11 +68,11 @@ public class InvestmentRuleService {
 		}
 	}
 
-	public Boolean purchaseCheck(BigDecimal companyPrice, BigDecimal purchasePrice) {
+	private Boolean purchaseCheck(BigDecimal companyPrice, BigDecimal purchasePrice) {
 		return companyPrice.compareTo(purchasePrice) < 1;
 	}
 
-	public Boolean saleCheck(BigDecimal companyPrice, BigDecimal salePrice) {
+	private Boolean saleCheck(BigDecimal companyPrice, BigDecimal salePrice) {
 		return companyPrice.compareTo(salePrice) > -1;
 	}
 	

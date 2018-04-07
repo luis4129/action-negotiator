@@ -38,9 +38,8 @@
     <main role="main" class="container">
     	<h1 class="mt-5">Simulador de variações de valores</h1>
       	<p class="lead">Ao clicar no botão abaixo, iniciara uma simulação gerando 100 variações de valores para cada empresa cadastrada, devido a cada variação demorar 5 segundos, o processo levará cerca de 10 minutos.</p>
-      	<form action="simulation/execute">
-      		<button type="submit" class="btn btn-outline-dark btn-lg">Executar Simulação</button>
-      	</form>
+      	<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href = 'simulation/execute'">Executar Simulação</button>
+      	<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href = 'reportRecent'">Exibir dados da última Simulação</button>
     </main>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
