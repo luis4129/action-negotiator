@@ -36,35 +36,29 @@
 	
 	<div class="container">
 	
-		<div id="account-list">
+		<div id="transaction-list">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>Email</th>
-						<th>Fundo de Investimento</th>
+						<th>Conta</th>
+						<th>Empresa</th>
+						<th>Tipo</th>
+						<th>Hora</th>
+						<th>Valor</th>
+						<th>Quantidade</th>
 					</tr>
 				</thead>
-				<tr th:each="account : ${accounts}">
-					<td><span th:text="${account.email}"></span></td>
-					<td><span th:text="${account.fund}"></span></td>
+				<tr th:each="transaction : ${transactions}">
+					<td><span th:text="${transaction.account.email}"></span></td>
+					<td><span th:text="${transaction.company.name}"></span></td>
+					<td><span th:text="${transaction.type}"></span></td>
+					<td><span th:text="${#calendars.format(transaction.createdIn, 'MM/dd/yyyy HH:mm:ss')}"></span></td>
+					<td><span th:text="${transaction.value}"></span></td>
+					<td><span th:text="${transaction.quantity}"></span></td>					
 				</tr>
 
 			</table>
 		</div>
-		
-		<hr/>
-	
-		<form action="account/save">
-			<div class="form-group">
-		    	<label for="account-email">E-mail</label>
-		    	<input type="email" class="form-control" id="account-email" name="account-email" placeholder="E-mail da conta">
-			</div>
-			<div class="form-group">
-		    	<label for="account-fund">Fundo de Investimentos</label>
-		    	<input type="number" class="form-control" id="account-fund" name="account-fund" placeholder="Valor disponível para fundo de investimentos ">
-		  	</div>
-		  	<button type="submit" class="btn btn-dark">Salvar</button>
-		</form>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

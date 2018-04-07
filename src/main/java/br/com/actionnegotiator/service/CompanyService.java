@@ -15,7 +15,7 @@ public class CompanyService {
 	private CompanyRepository repository;
 
 	@Autowired
-	private MonitorService monitorService;
+	private InvestmentRuleService investmentRuleService;
 
 	public Iterable<Company> findAll() {
 		return repository.findAll();
@@ -23,9 +23,8 @@ public class CompanyService {
 
 	public void save(Company company) {
 		repository.save(company);
-		monitorService.monitor(company);
+		investmentRuleService.monitor(company);
 	}
-
 	public void save(String name, BigDecimal value) {
 		Company company = new Company(name, value);
 		this.save(company);

@@ -3,9 +3,7 @@ package br.com.actionnegotiator.model;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -21,13 +19,13 @@ public class Account {
 
 	private BigDecimal fund;
 
-	@OneToMany
-	private Collection<Transaction> transstock;
+	@OneToMany(mappedBy="account")
+	private Collection<Transaction> transaction;
 
-	@OneToMany
+	@OneToMany(mappedBy="account")
 	private Collection<InvestmentRule> investmentRule;
 
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="account")
 	private Collection<Stock> stocks;
 
 	public Account() {
@@ -63,12 +61,12 @@ public class Account {
 		this.fund = fund;
 	}
 
-	public Collection<Transaction> getTransstock() {
-		return transstock;
+	public Collection<Transaction> getTransaction() {
+		return transaction;
 	}
 
-	public void setTransstock(Collection<Transaction> transstock) {
-		this.transstock = transstock;
+	public void setTransaction(Collection<Transaction> transaction) {
+		this.transaction = transaction;
 	}
 
 	public Collection<InvestmentRule> getInvestmentRule() {
