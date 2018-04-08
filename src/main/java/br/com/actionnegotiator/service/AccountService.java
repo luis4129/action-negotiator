@@ -19,13 +19,13 @@ public class AccountService {
 		return accountRepository.findAll();
 	}
 
-	public void save(Account account) throws DataIntegrityViolationException {
-		accountRepository.save(account);
+	public Account save(Account account) throws DataIntegrityViolationException {
+		return accountRepository.save(account);
 	}
 
-	public void save(String email, BigDecimal fund) throws DataIntegrityViolationException {
+	public Account save(String email, BigDecimal fund) throws DataIntegrityViolationException {
 		Account account = new Account(email, fund);
-		this.save(account);
+		return this.save(account);
 	}
 
 }

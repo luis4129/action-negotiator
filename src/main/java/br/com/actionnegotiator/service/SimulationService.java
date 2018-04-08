@@ -26,7 +26,7 @@ public class SimulationService {
 				company.setValue(BigDecimal.valueOf(10 + (Math.random())));
 				companyService.save(company);
 			}
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 		}
 		
 	}

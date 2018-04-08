@@ -22,13 +22,14 @@ public class CompanyService {
 		return companyRepository.findAll();
 	}
 
-	public void save(Company company) throws DataIntegrityViolationException {
-		companyRepository.save(company);
+	public Company save(Company company) throws DataIntegrityViolationException {
+		company = companyRepository.save(company);
 		investmentRuleService.monitor(company);
+		return company;
 	}
-	public void save(String name, BigDecimal value) throws DataIntegrityViolationException {
+	public Company save(String name, BigDecimal value) throws DataIntegrityViolationException {
 		Company company = new Company(name, value);
-		this.save(company);
+		return this.save(company);
 	}
 
 }

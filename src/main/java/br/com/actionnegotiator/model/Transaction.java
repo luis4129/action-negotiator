@@ -3,7 +3,6 @@ package br.com.actionnegotiator.model;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,11 +18,11 @@ public class Transaction {
 	private Long id;
 
 	@NotNull
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Account account;
 
 	@NotNull
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Company company;
 
 	@NotNull

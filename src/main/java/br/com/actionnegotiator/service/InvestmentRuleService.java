@@ -2,9 +2,14 @@ package br.com.actionnegotiator.service;
 
 import java.math.BigDecimal;
 
+import javax.mail.Session;
+
+import org.hibernate.Hibernate;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.model.Company;
@@ -25,11 +30,11 @@ public class InvestmentRuleService {
 		return investmentRuleRepository.findAll();
 	}
 
-	public void save(InvestmentRule investmentRule) throws DataIntegrityViolationException {
-		investmentRuleRepository.save(investmentRule);
+	public InvestmentRule save(InvestmentRule investmentRule) throws DataIntegrityViolationException {
+		return investmentRuleRepository.save(investmentRule);
 	}
 
-	public void save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DataIntegrityViolationException {
+	public InvestmentRule save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DataIntegrityViolationException {
 		Account account = new Account();
 		account.setId(accountId);
 
@@ -37,14 +42,16 @@ public class InvestmentRuleService {
 		company.setId(companyId);
 
 		InvestmentRule investmentRule = new InvestmentRule(account, company, purchaseValue, saleValue);
-		this.save(investmentRule);
+		return this.save(investmentRule);
 	}
 
 	public Iterable<InvestmentRule> findAllByCompany(Company company) {
 		return investmentRuleRepository.findAllByCompany(company);
 	}
 
+	@Transactional
 	public void monitor(Company company) {
+		
 		for (InvestmentRule investmentRule : this.findAllByCompany(company)) {
 
 			System.out.println(company.getName() + " - " + company.getValue());
@@ -58,7 +65,7 @@ public class InvestmentRuleService {
 			}
 
 			if (saleCheck(company.getValue(), investmentRule.getSalePrice())) {
-				for (Stock stock : investmentRule.getAccount().getStock()) {
+				for (Stock stock : stockService.findAllByAccount(investmentRule.getAccount())) {
 					if (stock.getCompany().getId().equals(company.getId())) {
 						System.out.println("SOLD");
 						stockService.sellStock(stock);

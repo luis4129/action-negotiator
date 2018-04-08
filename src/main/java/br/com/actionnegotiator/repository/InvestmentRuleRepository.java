@@ -7,6 +7,6 @@ import br.com.actionnegotiator.model.InvestmentRule;
 
 public interface InvestmentRuleRepository extends CrudRepository<InvestmentRule, Long>  {
 	
-	Iterable<InvestmentRule> findAllByCompany(Company company);
+	Iterable<InvestmentRule> findAllByCompany(Company company);	
 
 }

@@ -21,9 +21,6 @@ public class Company {
 	@GeneratedValue
 	private Long id;
 
-	@OneToMany(mappedBy="company")
-	private Collection<Stock> stock;
-
 	@NotNull
 	private String name;
 
@@ -61,14 +58,6 @@ public class Company {
 
 	public void setValue(BigDecimal value) {
 		this.value = value;
-	}
-
-	public Collection<Stock> getStock() {
-		return stock;
-	}
-
-	public void setStock(Collection<Stock> stock) {
-		this.stock = stock;
 	}
 
 }

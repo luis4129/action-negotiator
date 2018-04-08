@@ -23,11 +23,11 @@ public class InvestmentRule {
 	private Long id;
 
 	@NotNull
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Account account;
 
 	@NotNull
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Company company;
 
 	private BigDecimal purchasePrice;
