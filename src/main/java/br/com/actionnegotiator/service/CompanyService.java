@@ -29,7 +29,7 @@ public class CompanyService {
 	}
 	public Company save(String name, BigDecimal value) throws DataIntegrityViolationException {
 		Company company = new Company(name, value);
-		return this.save(company);
+		return companyRepository.save(company);
 	}
 
 }

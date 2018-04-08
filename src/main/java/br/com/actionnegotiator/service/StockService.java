@@ -42,8 +42,9 @@ public class StockService {
 	public void purchaseStock(Account account, Company company) {
 		BigDecimal quantity = account.getFund().divide(company.getValue(), 2, RoundingMode.HALF_EVEN);
 		account.setFund(BigDecimal.ZERO);
-		Stock stock = new Stock(account, company, quantity);
+		account = accountService.save(account);
 		transactionService.save(TransactionType.PURCHASE, account, company, company.getValue(), quantity);
+		Stock stock = new Stock(account, company, quantity);
 		this.save(stock);
 	}
 

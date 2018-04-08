@@ -2,7 +2,6 @@ package br.com.actionnegotiator.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,9 +31,6 @@ public class Stock {
 
 	private BigDecimal quantity;
 
-	public Stock() {
-
-	}
 
 	public Stock(Account account, Company company, BigDecimal quantity) {
 		setAccount(account);

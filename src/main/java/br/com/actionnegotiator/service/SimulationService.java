@@ -24,7 +24,7 @@ public class SimulationService {
 		for (int i = 0; i < 100; i++) {
 			for (Company company : companys) {
 				company.setValue(BigDecimal.valueOf(10 + (Math.random())));
-				companyService.save(company);
+				company = companyService.save(company);
 			}
 			//Thread.sleep(5000);
 		}

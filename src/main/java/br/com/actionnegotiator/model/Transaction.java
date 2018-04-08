@@ -39,10 +39,6 @@ public class Transaction {
 	
 	private Boolean recent;
 
-	public Transaction() {
-
-	}
-
 	public Transaction(TransactionType transactionType, Account account, Company company, BigDecimal value,
 			BigDecimal quantity) {
 		setType(transactionType);

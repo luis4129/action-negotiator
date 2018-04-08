@@ -1,12 +1,10 @@
 package br.com.actionnegotiator.model;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -27,13 +25,13 @@ public class Company {
 	@NotNull
 	private BigDecimal value;
 
-	public Company() {
-
-	}
-
 	public Company(String name, BigDecimal value) {
 		this.setName(name);
 		this.setValue(value);
+	}
+
+	public Company(Long id) {
+		this.setId(id);
 	}
 
 	public Long getId() {

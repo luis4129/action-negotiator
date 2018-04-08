@@ -18,14 +18,15 @@ public class AccountService {
 	public Iterable<Account> findAll() {
 		return accountRepository.findAll();
 	}
-
+	
 	public Account save(Account account) throws DataIntegrityViolationException {
 		return accountRepository.save(account);
 	}
 
+
 	public Account save(String email, BigDecimal fund) throws DataIntegrityViolationException {
 		Account account = new Account(email, fund);
-		return this.save(account);
+		return accountRepository.save(account);
 	}
 
 }

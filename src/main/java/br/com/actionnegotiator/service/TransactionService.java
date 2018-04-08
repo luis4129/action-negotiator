@@ -20,15 +20,11 @@ public class TransactionService {
 	@Autowired
 	private EmailService emailService;
 
-	public void save(Transaction transaction) {
-		transactionRepository.save(transaction);
-		emailService.notify(transaction);
-	}
-
 	public void save(TransactionType transactionType, Account account, Company company, BigDecimal value,
 			BigDecimal quantity) {
 		Transaction transaction = new Transaction(transactionType, account, company, value, quantity);
-		this.save(transaction);		
+		transaction = transactionRepository.save(transaction);
+		emailService.notify(transaction);
 	}
 
 	public Iterable<Transaction> findAll() {

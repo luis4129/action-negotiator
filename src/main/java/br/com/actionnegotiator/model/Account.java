@@ -29,21 +29,18 @@ public class Account {
 	private BigDecimal fund;
 
 	@OneToMany(mappedBy="account")
-	private Collection<Transaction> transaction;
-
-	@OneToMany(mappedBy="account")
 	private Collection<InvestmentRule> investmentRule;
 
 	@OneToMany(mappedBy="account", fetch=FetchType.EAGER)
 	private Collection<Stock> stock;
 
-	public Account() {
-
-	}
-
 	public Account(String email, BigDecimal fund) {
 		this.setEmail(email);
 		this.setFund(fund);
+	}
+
+	public Account(Long id) {
+		this.setId(id);
 	}
 
 	public Long getId() {
@@ -68,14 +65,6 @@ public class Account {
 
 	public void setFund(BigDecimal fund) {
 		this.fund = fund;
-	}
-
-	public Collection<Transaction> getTransaction() {
-		return transaction;
-	}
-
-	public void setTransaction(Collection<Transaction> transaction) {
-		this.transaction = transaction;
 	}
 
 	public Collection<InvestmentRule> getInvestmentRule() {

@@ -2,10 +2,6 @@ package br.com.actionnegotiator.service;
 
 import java.math.BigDecimal;
 
-import javax.mail.Session;
-
-import org.hibernate.Hibernate;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -30,19 +26,11 @@ public class InvestmentRuleService {
 		return investmentRuleRepository.findAll();
 	}
 
-	public InvestmentRule save(InvestmentRule investmentRule) throws DataIntegrityViolationException {
-		return investmentRuleRepository.save(investmentRule);
-	}
-
 	public InvestmentRule save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DataIntegrityViolationException {
-		Account account = new Account();
-		account.setId(accountId);
-
-		Company company = new Company();
-		company.setId(companyId);
-
+		Account account = new Account(accountId);
+		Company company = new Company(companyId);
 		InvestmentRule investmentRule = new InvestmentRule(account, company, purchaseValue, saleValue);
-		return this.save(investmentRule);
+		return investmentRuleRepository.save(investmentRule);
 	}
 
 	public Iterable<InvestmentRule> findAllByCompany(Company company) {
