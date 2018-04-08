@@ -48,7 +48,8 @@ public class StockServiceTest {
 	@Test(expected = DuplicateConstraintException.class)
 	public void mustRespectUniqueKey() throws DuplicateConstraintException {
 		Mockito.when(stockRepository.findByAccountAndCompany(account, company)).thenReturn(stock);
-		stockService.save(stock);		
+		stockService.save(stock);	
+		//assertEquals()
 	}
 	
 }

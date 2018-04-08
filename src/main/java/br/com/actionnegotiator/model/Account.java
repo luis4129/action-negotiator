@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -31,8 +30,12 @@ public class Account {
 	@OneToMany(mappedBy="account")
 	private Collection<InvestmentRule> investmentRule;
 
-	@OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="account")
 	private Collection<Stock> stock;
+	
+	public Account() {
+		super();
+	}
 
 	public Account(String email, BigDecimal fund) {
 		this.setEmail(email);

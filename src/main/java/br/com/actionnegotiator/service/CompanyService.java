@@ -41,8 +41,7 @@ public class CompanyService {
 	}
 	
 	public Company save(String name, BigDecimal value) throws DuplicateConstraintException {		
-		Company company = new Company(name, value);
-		return this.save(company);
+		return this.save(new Company(name, value));
 	}
 	
 	private boolean nameAlreadyExists(String name) {

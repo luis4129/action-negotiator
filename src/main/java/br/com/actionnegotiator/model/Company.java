@@ -24,6 +24,10 @@ public class Company {
 
 	@NotNull
 	private BigDecimal value;
+	
+	public Company() {
+		super();
+	}
 
 	public Company(String name, BigDecimal value) {
 		this.setName(name);

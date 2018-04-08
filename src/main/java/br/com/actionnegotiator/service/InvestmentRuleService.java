@@ -43,10 +43,7 @@ public class InvestmentRuleService {
 	}
 
 	public InvestmentRule save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DuplicateConstraintException {
-		Account account = new Account(accountId);
-		Company company = new Company(companyId);
-		InvestmentRule investmentRule = new InvestmentRule(account, company, purchaseValue, saleValue);
-		return this.save(investmentRule);
+		return this.save(new InvestmentRule(new Account(accountId), new Company(companyId), purchaseValue, saleValue));
 	}
 
 	public Iterable<InvestmentRule> findAllByCompany(Company company) {

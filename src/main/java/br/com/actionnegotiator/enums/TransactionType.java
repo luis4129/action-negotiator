@@ -1,6 +1,8 @@
-package br.com.actionnegotiator.model;
+package br.com.actionnegotiator.enums;
 
 import java.math.BigDecimal;
+
+import br.com.actionnegotiator.model.InvestmentRule;
 
 public enum TransactionType {
 

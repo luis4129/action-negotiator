@@ -24,12 +24,11 @@ public class AccountService {
 	}
 	
 	public Account save(String email, BigDecimal fund) throws DuplicateConstraintException {
-		Account account = new Account(email, fund);
-		return this.save(account);
+		return this.save(new Account(email, fund));
 	}
 	
 	public Account save(Account account) throws DuplicateConstraintException {
-		if (emailAlreadyExists(account.getEmail())) {
+		if (account.getId() == null && emailAlreadyExists(account.getEmail())) {
 			throw new DuplicateConstraintException("Já existe uma conta com o email " + account.getEmail() + " cadastrada.");
 		}
 		
@@ -38,11 +37,6 @@ public class AccountService {
 
 	private boolean emailAlreadyExists(String email) {
 		return accountRepository.findByEmail(email) != null;
-	}
-	
-	public Account updateFund(Account account, BigDecimal newFund) {
-		account.setFund(newFund);
-		return accountRepository.save(account);
 	}
 
 }

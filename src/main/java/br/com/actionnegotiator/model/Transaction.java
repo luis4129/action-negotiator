@@ -4,11 +4,12 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import br.com.actionnegotiator.enums.TransactionType;
 
 @Entity
 public class Transaction {
@@ -18,11 +19,11 @@ public class Transaction {
 	private Long id;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Account account;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Company company;
 
 	@NotNull
@@ -38,6 +39,10 @@ public class Transaction {
 	private TransactionType type;
 	
 	private Boolean recent;
+	
+	public Transaction() {
+		super();
+	}
 
 	public Transaction(TransactionType transactionType, Account account, Company company, BigDecimal value,
 			BigDecimal quantity) {

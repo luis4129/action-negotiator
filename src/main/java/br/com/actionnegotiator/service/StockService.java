@@ -8,11 +8,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.actionnegotiator.enums.TransactionType;
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.model.Company;
 import br.com.actionnegotiator.model.Stock;
 import br.com.actionnegotiator.model.Transaction;
-import br.com.actionnegotiator.model.TransactionType;
 import br.com.actionnegotiator.repository.StockRepository;
 import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
@@ -55,20 +55,27 @@ public class StockService {
 	@Transactional
 	public void purchaseStock(Account account, Company company) throws DuplicateConstraintException {
 		BigDecimal quantity = account.getFund().divide(company.getValue(), 2, RoundingMode.HALF_EVEN);
-		account = accountService.updateFund(account, BigDecimal.ZERO);
-		Transaction transaction = new Transaction(TransactionType.PURCHASE, account, company, company.getValue(), quantity);				
-		transactionService.save(transaction);
+		account = updateAccountValue(account, BigDecimal.ZERO);
+		createTransaction(TransactionType.PURCHASE, account, company, quantity);
 		Stock stock = new Stock(account, company, quantity);
 		this.save(stock);
 	}
 
 	@Transactional
-	public void sellStock(Stock stock) {
+	public void sellStock(Stock stock) throws DuplicateConstraintException {
 		BigDecimal value = stock.getQuantity().multiply(stock.getCompany().getValue());
-		Account account = accountService.updateFund(stock.getAccount(), value);
-		Transaction transaction = new Transaction(TransactionType.SALE, account, stock.getCompany(), stock.getCompany().getValue(), stock.getQuantity());				
-		transactionService.save(transaction);
+		Account account = updateAccountValue(stock.getAccount(), value);
+		createTransaction(TransactionType.SALE, account, stock.getCompany(), stock.getQuantity());		
 		this.delete(stock);
+	}
+
+	private Account updateAccountValue(Account account, BigDecimal value) throws DuplicateConstraintException {
+		account.setFund(value);
+		return accountService.save(account);
+	}
+	private void createTransaction(TransactionType transactionType, Account account, Company company, BigDecimal quantity) {	
+		Transaction transaction = new Transaction(transactionType, account, company, company.getValue(), quantity);				
+		transactionService.save(transaction);
 	}
 
 }

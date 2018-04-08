@@ -3,7 +3,6 @@ package br.com.actionnegotiator.model;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -22,15 +21,18 @@ public class Stock {
 	private Long id;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Account account;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Company company;
 
 	private BigDecimal quantity;
-
+	
+	public Stock() {
+		super();
+	}
 
 	public Stock(Account account, Company company, BigDecimal quantity) {
 		setAccount(account);

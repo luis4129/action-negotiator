@@ -3,9 +3,9 @@ package br.com.actionnegotiator.controller;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,7 +15,7 @@ import br.com.actionnegotiator.service.InvestmentRuleService;
 import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Controller
-@RequestMapping("/investmentRule*")
+@RequestMapping("/investmentRule")
 public class InvestmentRuleController {
 
 	@Autowired
@@ -27,7 +27,7 @@ public class InvestmentRuleController {
 	@Autowired
 	CompanyService companyService;
 
-	@RequestMapping("")
+	@GetMapping
 	public String investmentRule(Model model) {
 		model.addAttribute("accounts", accountService.findAll());
 		model.addAttribute("companys", companyService.findAll());
@@ -40,11 +40,7 @@ public class InvestmentRuleController {
 			@RequestParam("investment-rule-company") Long companyId,
 			@RequestParam("investment-rule-purchase-price") BigDecimal purchasePrice,
 			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) throws DuplicateConstraintException {
-		try {
-			investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
-		} catch (DataIntegrityViolationException e) {
-			e.printStackTrace();
-		}
+		investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
 		return "redirect:/investmentRule";
 	}
 
