@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.actionnegotiator.service.SimulationService;
+import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Controller
 @RequestMapping("/simulation*")
@@ -19,7 +20,7 @@ public class SimulationController {
 	}
 
 	@RequestMapping("/execute")
-	public String execute() throws InterruptedException {
+	public String execute() throws InterruptedException, DuplicateConstraintException {
 		simulationService.executeSimulation();
 		return "redirect:/reportRecent";
 	}

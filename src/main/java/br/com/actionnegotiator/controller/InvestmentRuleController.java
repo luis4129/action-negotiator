@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import br.com.actionnegotiator.service.AccountService;
 import br.com.actionnegotiator.service.CompanyService;
 import br.com.actionnegotiator.service.InvestmentRuleService;
+import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Controller
 @RequestMapping("/investmentRule*")
@@ -38,7 +39,7 @@ public class InvestmentRuleController {
 	public String save(@RequestParam("investment-rule-account") Long accountId,
 			@RequestParam("investment-rule-company") Long companyId,
 			@RequestParam("investment-rule-purchase-price") BigDecimal purchasePrice,
-			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) {
+			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) throws DuplicateConstraintException {
 		try {
 			investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
 		} catch (DataIntegrityViolationException e) {

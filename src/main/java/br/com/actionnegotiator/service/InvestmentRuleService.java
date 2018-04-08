@@ -3,7 +3,6 @@ package br.com.actionnegotiator.service;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +11,7 @@ import br.com.actionnegotiator.model.Company;
 import br.com.actionnegotiator.model.InvestmentRule;
 import br.com.actionnegotiator.model.Stock;
 import br.com.actionnegotiator.repository.InvestmentRuleRepository;
+import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Service
 public class InvestmentRuleService {
@@ -21,16 +21,32 @@ public class InvestmentRuleService {
 	
 	@Autowired
 	private StockService stockService;
+	
+	public InvestmentRuleService(InvestmentRuleRepository investmentRuleRepository) {
+		this.investmentRuleRepository = investmentRuleRepository;
+	}
 
 	public Iterable<InvestmentRule> findAll() {
 		return investmentRuleRepository.findAll();
 	}
+	
+	private boolean ruleAlreadyExists(Account account, Company company) {
+		return investmentRuleRepository.findByAccountAndCompany(account, company) != null;
+	}
+	
+	public InvestmentRule save (InvestmentRule investmentRule) throws DuplicateConstraintException {
+		if (investmentRule.getId() == null && ruleAlreadyExists(investmentRule.getAccount(), investmentRule.getCompany())) {
+			throw new DuplicateConstraintException("Já existe uma regra de investimento para a conta " + investmentRule.getAccount().getEmail() + " e a empresa " + investmentRule.getCompany().getName() + " cadastrada." );
+		}
+		
+		return investmentRuleRepository.save(investmentRule);
+	}
 
-	public InvestmentRule save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DataIntegrityViolationException {
+	public InvestmentRule save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DuplicateConstraintException {
 		Account account = new Account(accountId);
 		Company company = new Company(companyId);
 		InvestmentRule investmentRule = new InvestmentRule(account, company, purchaseValue, saleValue);
-		return investmentRuleRepository.save(investmentRule);
+		return this.save(investmentRule);
 	}
 
 	public Iterable<InvestmentRule> findAllByCompany(Company company) {
@@ -38,7 +54,7 @@ public class InvestmentRuleService {
 	}
 
 	@Transactional
-	public void monitor(Company company) {
+	public void monitor(Company company) throws DuplicateConstraintException {
 		
 		for (InvestmentRule investmentRule : this.findAllByCompany(company)) {
 

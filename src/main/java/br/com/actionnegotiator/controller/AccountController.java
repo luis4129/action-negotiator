@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.service.AccountService;
+import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Controller
 @RequestMapping("/account*")
@@ -27,7 +28,7 @@ public class AccountController {
 	}
 
 	@RequestMapping("/save")
-	public String save(@RequestParam("account-email") String email, @RequestParam("account-fund") BigDecimal fund) {
+	public String save(@RequestParam("account-email") String email, @RequestParam("account-fund") BigDecimal fund) throws DuplicateConstraintException {
 		try {
 			accountService.save(email, fund);
 		} catch (DataIntegrityViolationException e) {
