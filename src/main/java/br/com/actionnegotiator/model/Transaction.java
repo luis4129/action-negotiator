@@ -54,8 +54,15 @@ public class Transaction {
 		this.quantity = quantity;
 		this.type = type;
 		this.recent = recent;
-	}
+	}	
 	
+	public Transaction(Account account, Company company, TransactionType type) {
+		super();
+		this.account = account;
+		this.company = company;
+		this.type = type;
+	}
+
 	public Long getId() {
 		return id;
 	}

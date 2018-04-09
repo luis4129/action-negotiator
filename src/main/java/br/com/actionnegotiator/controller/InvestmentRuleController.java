@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.com.actionnegotiator.exception.BigDecimalLengthException;
+import br.com.actionnegotiator.exception.DuplicateConstraintException;
+import br.com.actionnegotiator.model.Account;
+import br.com.actionnegotiator.model.Company;
+import br.com.actionnegotiator.model.InvestmentRule;
 import br.com.actionnegotiator.service.AccountService;
 import br.com.actionnegotiator.service.CompanyService;
 import br.com.actionnegotiator.service.InvestmentRuleService;
-import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Controller
 @RequestMapping("/investmentRule")
@@ -36,11 +40,18 @@ public class InvestmentRuleController {
 	}
 
 	@RequestMapping("/save")
-	public String save(@RequestParam("investment-rule-account") Long accountId,
+	public String save(@RequestParam("investment-rule-id") Long id,
+			@RequestParam("investment-rule-account") Long accountId,
 			@RequestParam("investment-rule-company") Long companyId,
 			@RequestParam("investment-rule-purchase-price") BigDecimal purchasePrice,
-			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) throws DuplicateConstraintException {
-		investmentRuleService.save(accountId, companyId, purchasePrice, salePrice);
+			@RequestParam("investment-rule-sale-price") BigDecimal salePrice) throws DuplicateConstraintException, BigDecimalLengthException {
+		investmentRuleService.save(new InvestmentRule(id, new Account(accountId), new Company(companyId), purchasePrice, salePrice));
+		return "redirect:/investmentRule";
+	}
+	
+	@RequestMapping("/delete")
+	public String save(@RequestParam("investment-rule-id") Long id) throws DuplicateConstraintException, BigDecimalLengthException {
+		investmentRuleService.delete(new InvestmentRule(id));
 		return "redirect:/investmentRule";
 	}
 

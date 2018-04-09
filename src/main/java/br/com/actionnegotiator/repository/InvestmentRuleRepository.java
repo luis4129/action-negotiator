@@ -8,8 +8,8 @@ import br.com.actionnegotiator.model.InvestmentRule;
 
 public interface InvestmentRuleRepository extends CrudRepository<InvestmentRule, Long>  {
 	
-	Iterable<InvestmentRule> findAllByCompany(Company company);	
+	public Iterable<InvestmentRule> findByCompany(Company company);	
 	
-	InvestmentRule findByAccountAndCompany(Account account, Company company);
+	public InvestmentRule findByAccountAndCompany(Account account, Company company);
 
 }

@@ -1,4 +1,4 @@
-package br.com.actionnegotiator.service.exception;
+package br.com.actionnegotiator.exception;
 
 public class DuplicateConstraintException extends Exception {
 	

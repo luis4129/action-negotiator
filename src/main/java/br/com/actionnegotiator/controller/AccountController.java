@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.com.actionnegotiator.exception.BigDecimalLengthException;
+import br.com.actionnegotiator.exception.DuplicateConstraintException;
+import br.com.actionnegotiator.exception.StringLengthException;
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.service.AccountService;
-import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Controller
 @RequestMapping("/account")
@@ -28,8 +30,8 @@ public class AccountController {
 	}
 
 	@RequestMapping("/save")
-	public String save(@RequestParam("account-email") String email, @RequestParam("account-fund") BigDecimal fund) throws DuplicateConstraintException {
-		accountService.save(email, fund);
+	public String save(@RequestParam("account-email") String email, @RequestParam("account-fund") BigDecimal fund) throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		accountService.save(new Account(email, fund));
 		return "redirect:/account";
 	}
 

@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.actionnegotiator.exception.BigDecimalLengthException;
+import br.com.actionnegotiator.exception.DuplicateConstraintException;
+import br.com.actionnegotiator.exception.StringLengthException;
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.model.Company;
 import br.com.actionnegotiator.model.InvestmentRule;
 import br.com.actionnegotiator.model.Stock;
+import br.com.actionnegotiator.model.Transaction;
 import br.com.actionnegotiator.repository.InvestmentRuleRepository;
-import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
+import br.com.actionnegotiator.util.SystemUtil;
 
 @Service
 public class InvestmentRuleService {
@@ -34,25 +38,32 @@ public class InvestmentRuleService {
 		return investmentRuleRepository.findByAccountAndCompany(account, company) != null;
 	}
 	
-	public InvestmentRule save (InvestmentRule investmentRule) throws DuplicateConstraintException {
-		if (investmentRule.getId() == null && ruleAlreadyExists(investmentRule.getAccount(), investmentRule.getCompany())) {
-			throw new DuplicateConstraintException("Já existe uma regra de investimento para a conta " + investmentRule.getAccount().getEmail() + " e a empresa " + investmentRule.getCompany().getName() + " cadastrada." );
-		}
-		
+	public InvestmentRule save (InvestmentRule investmentRule) throws DuplicateConstraintException, BigDecimalLengthException {
+		validateSave(investmentRule);
 		return investmentRuleRepository.save(investmentRule);
 	}
-
-	public InvestmentRule save(Long accountId, Long companyId, BigDecimal purchaseValue, BigDecimal saleValue) throws DuplicateConstraintException {
-		return this.save(new InvestmentRule(new Account(accountId), new Company(companyId), purchaseValue, saleValue));
+	
+	public void delete (InvestmentRule investmentRule) {
+		investmentRuleRepository.delete(investmentRule);
+	}
+	
+	private void validateSave(InvestmentRule investmentRule) throws DuplicateConstraintException, BigDecimalLengthException {
+		if (ruleAlreadyExists(investmentRule.getAccount(), investmentRule.getCompany())) {
+			throw new DuplicateConstraintException("Já existe uma regra de investimento para a conta " + investmentRule.getAccount().getEmail() + " e a empresa " + investmentRule.getCompany().getName() + " cadastrada." );
+		} else if (SystemUtil.invalidBigDecimalLength(investmentRule.getPurchasePrice())) {
+			throw new BigDecimalLengthException("Preço de compra maior do que o permitido, favor preencher o mesmo com menos de 19 dígitos antes da vírgula.");
+		} else if (SystemUtil.invalidBigDecimalLength(investmentRule.getSalePrice())) {
+			throw new BigDecimalLengthException("Preço de venda maior do que o permitido, favor preencher o mesmo com menos de 19 dígitos antes da vírgula.");
+		}
 	}
 
-	public Iterable<InvestmentRule> findAllByCompany(Company company) {
-		return investmentRuleRepository.findAllByCompany(company);
+	public Iterable<InvestmentRule> findByCompany(Company company) {
+		return investmentRuleRepository.findByCompany(company);
 	}
 
 	@Transactional
-	public void monitor(Company company) throws DuplicateConstraintException {		
-		for (InvestmentRule investmentRule : this.findAllByCompany(company)) {
+	public void monitor(Company company) throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {		
+		for (InvestmentRule investmentRule : this.findByCompany(company)) {
 			if (canPurchase(company.getValue(), investmentRule.getPurchasePrice()) && accountHasFunds(investmentRule.getAccount())) {				
 				stockService.purchaseStock(investmentRule.getAccount(), company);				
 			} else if (canSell(company.getValue(), investmentRule.getSalePrice())) {
@@ -74,6 +85,15 @@ public class InvestmentRuleService {
 	
 	private boolean accountHasFunds(Account account) {
 		return account.getFund().compareTo(BigDecimal.ZERO) > 0;
+	}
+	
+	public BigDecimal getRequestedValue(Transaction transaction) {
+		for (InvestmentRule investmentRule : transaction.getAccount().getInvestmentRules()) {
+			if (investmentRule.getCompany().getId().equals(transaction.getCompany().getId())) {
+				return transaction.getType().getValue(investmentRule);
+			}
+		}
+		return BigDecimal.ZERO;
 	}
 	
 }

@@ -5,8 +5,10 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.actionnegotiator.exception.BigDecimalLengthException;
+import br.com.actionnegotiator.exception.DuplicateConstraintException;
+import br.com.actionnegotiator.exception.StringLengthException;
 import br.com.actionnegotiator.model.Company;
-import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @Service
 public class SimulationService {
@@ -20,7 +22,7 @@ public class SimulationService {
 	@Autowired
 	private InvestmentRuleService investmentRuleService;
 
-	public void executeSimulation() throws InterruptedException, DuplicateConstraintException {
+	public void executeSimulation() throws InterruptedException, DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
 
 		transactionService.setAllRecentToFalse();
 		Iterable<Company> companies = companyService.findAll();
@@ -30,7 +32,7 @@ public class SimulationService {
 				company.setValue(BigDecimal.valueOf(10 + (Math.random())));
 				investmentRuleService.monitor(companyService.save(company));
 			}
-			//Thread.sleep(5000);
+			Thread.sleep(5000);
 		}
 		
 	}

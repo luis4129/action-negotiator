@@ -28,6 +28,7 @@ public class Stock {
 	@ManyToOne
 	private Company company;
 
+	@NotNull
 	private BigDecimal quantity;
 	
 	public Stock() {

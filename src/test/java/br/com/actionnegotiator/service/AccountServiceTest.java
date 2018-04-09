@@ -9,9 +9,11 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import br.com.actionnegotiator.exception.BigDecimalLengthException;
+import br.com.actionnegotiator.exception.DuplicateConstraintException;
+import br.com.actionnegotiator.exception.StringLengthException;
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.repository.AccountRepository;
-import br.com.actionnegotiator.service.exception.DuplicateConstraintException;
 
 @RunWith(SpringRunner.class)
 public class AccountServiceTest {
@@ -33,14 +35,34 @@ public class AccountServiceTest {
 	}
 	
 	@Test
-	public void mustExecuteRepositorySave() throws DuplicateConstraintException {
+	public void mustExecuteRepositoryFindAll() {
+		accountService.findAll();
+		Mockito.verify(accountRepository).findAll();
+	}
+	
+	@Test
+	public void mustExecuteRepositorySave() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
 		accountService.save(account);
 		Mockito.verify(accountRepository).save(account);
 	}
 	
 	@Test(expected = DuplicateConstraintException.class)
-	public void mustRespectUniqueKey() throws DuplicateConstraintException {
+	public void mustRespectUniqueKey() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
 		Mockito.when(accountRepository.findByEmail(email)).thenReturn(account);
+		accountService.save(account);		
+	}
+	
+	@Test(expected = StringLengthException.class)
+	public void mustRespectEmailLength() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		account.setEmail("ABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZ"
+				+ "ABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZ"
+				+ "ABCDEFGHIJKLMNOPQRSTUVXYWZABCDEFGHIJKLMNOPQRSTUVXYWZ");
+		accountService.save(account);		
+	}
+	
+	@Test(expected = BigDecimalLengthException.class)
+	public void mustRespectFundLength() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		account.setFund(BigDecimal.valueOf(1111111111111111111L).multiply(BigDecimal.valueOf(1000)));
 		accountService.save(account);		
 	}
 	

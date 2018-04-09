@@ -28,22 +28,30 @@ public class InvestmentRule {
 	@ManyToOne
 	private Company company;
 
+	@NotNull
 	private BigDecimal purchasePrice;
 
+	@NotNull
 	private BigDecimal salePrice;
 	
 	public InvestmentRule() {
 		super();
 	}	
 
-	public InvestmentRule(Account account, Company company, BigDecimal purchasePrice, BigDecimal salePrice) {
+	public InvestmentRule(Long id, Account account, Company company, BigDecimal purchasePrice, BigDecimal salePrice) {
 		super();
+		this.id = id;
 		this.account = account;
 		this.company = company;
 		this.purchasePrice = purchasePrice;
 		this.salePrice = salePrice;
 	}
 	
+	public InvestmentRule(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

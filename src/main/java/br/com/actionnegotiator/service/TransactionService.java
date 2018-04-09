@@ -12,10 +12,12 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
-	public Transaction save(Transaction transaction) {
-		transaction = transactionRepository.save(transaction);
-		
-		return transaction;
+	public TransactionService(TransactionRepository transactionRepository) {
+		this.transactionRepository = transactionRepository;
+	}
+	
+	public Transaction save(Transaction transaction) {		
+		return transactionRepository.save(transaction);
 	}
 
 	public Iterable<Transaction> findAll() {
