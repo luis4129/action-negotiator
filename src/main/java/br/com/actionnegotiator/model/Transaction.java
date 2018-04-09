@@ -42,19 +42,20 @@ public class Transaction {
 	
 	public Transaction() {
 		super();
-	}
+	}	
 
-	public Transaction(TransactionType transactionType, Account account, Company company, BigDecimal value,
-			BigDecimal quantity) {
-		setType(transactionType);
-		setAccount(account);
-		setCompany(company);
-		setValue(value);
-		setQuantity(quantity);
-		setCreatedIn(Calendar.getInstance());
-		setRecent(true);
+	public Transaction(Account account, Company company, Calendar createdIn, BigDecimal value, BigDecimal quantity,
+			TransactionType type, Boolean recent) {
+		super();
+		this.account = account;
+		this.company = company;
+		this.createdIn = createdIn;
+		this.value = value;
+		this.quantity = quantity;
+		this.type = type;
+		this.recent = recent;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

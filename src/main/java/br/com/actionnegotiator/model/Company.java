@@ -27,11 +27,12 @@ public class Company {
 	
 	public Company() {
 		super();
-	}
+	}	
 
 	public Company(String name, BigDecimal value) {
-		this.setName(name);
-		this.setValue(value);
+		super();
+		this.name = name;
+		this.value = value;
 	}
 
 	public Company(Long id) {

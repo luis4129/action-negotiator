@@ -31,7 +31,6 @@ public class AccountController {
 	public String save(@RequestParam("account-email") String email, @RequestParam("account-fund") BigDecimal fund) throws DuplicateConstraintException {
 		accountService.save(email, fund);
 		return "redirect:/account";
-		//return "redirect:/account?TESTEDAPIPOCA=DEUPAU";
 	}
 
 }

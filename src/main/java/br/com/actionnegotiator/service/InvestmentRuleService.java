@@ -51,37 +51,29 @@ public class InvestmentRuleService {
 	}
 
 	@Transactional
-	public void monitor(Company company) throws DuplicateConstraintException {
-		
+	public void monitor(Company company) throws DuplicateConstraintException {		
 		for (InvestmentRule investmentRule : this.findAllByCompany(company)) {
-
-			System.out.println(company.getName() + " - " + company.getValue());
-			
-			if (purchaseCheck(company.getValue(), investmentRule.getPurchasePrice())) {
-				Account account = investmentRule.getAccount();
-				if (!account.getFund().equals(BigDecimal.ZERO)) {
-					System.out.println("BOUGHT");
-					stockService.purchaseStock(account, company);
-				}
-			}
-
-			if (saleCheck(company.getValue(), investmentRule.getSalePrice())) {
-				for (Stock stock : stockService.findAllByAccount(investmentRule.getAccount())) {
-					if (stock.getCompany().getId().equals(company.getId())) {
-						System.out.println("SOLD");
-						stockService.sellStock(stock);
-					}
-				}				
+			if (canPurchase(company.getValue(), investmentRule.getPurchasePrice()) && accountHasFunds(investmentRule.getAccount())) {				
+				stockService.purchaseStock(investmentRule.getAccount(), company);				
+			} else if (canSell(company.getValue(), investmentRule.getSalePrice())) {
+				Stock stock = stockService.findByAccountAndCompany(investmentRule.getAccount(), company);
+				if (stock != null) {
+					stockService.sellStock(stock);
+				}																
 			}
 		}
 	}
 
-	private Boolean purchaseCheck(BigDecimal companyPrice, BigDecimal purchasePrice) {
+	private Boolean canPurchase(BigDecimal companyPrice, BigDecimal purchasePrice) {
 		return companyPrice.compareTo(purchasePrice) < 1;
 	}
 
-	private Boolean saleCheck(BigDecimal companyPrice, BigDecimal salePrice) {
+	private Boolean canSell(BigDecimal companyPrice, BigDecimal salePrice) {
 		return companyPrice.compareTo(salePrice) > -1;
+	}
+	
+	private boolean accountHasFunds(Account account) {
+		return account.getFund().compareTo(BigDecimal.ZERO) > 0;
 	}
 	
 }

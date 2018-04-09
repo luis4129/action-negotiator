@@ -28,24 +28,26 @@ public class Account {
 	private BigDecimal fund;
 
 	@OneToMany(mappedBy="account")
-	private Collection<InvestmentRule> investmentRule;
+	private Collection<InvestmentRule> investmentRules;
 
 	@OneToMany(mappedBy="account")
-	private Collection<Stock> stock;
+	private Collection<Stock> stocks;
 	
 	public Account() {
 		super();
 	}
-
+	
 	public Account(String email, BigDecimal fund) {
-		this.setEmail(email);
-		this.setFund(fund);
-	}
+		super();
+		this.email = email;
+		this.fund = fund;
+	}	
 
 	public Account(Long id) {
-		this.setId(id);
+		super();
+		this.id = id;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -70,20 +72,20 @@ public class Account {
 		this.fund = fund;
 	}
 
-	public Collection<InvestmentRule> getInvestmentRule() {
-		return investmentRule;
+	public Collection<InvestmentRule> getInvestmentRules() {
+		return investmentRules;
 	}
 
-	public void setInvestmentRule(Collection<InvestmentRule> investmentRule) {
-		this.investmentRule = investmentRule;
+	public void setInvestmentRules(Collection<InvestmentRule> investmentRules) {
+		this.investmentRules = investmentRules;
 	}
 
-	public Collection<Stock> getStock() {
-		return stock;
+	public Collection<Stock> getStocks() {
+		return stocks;
 	}
 
-	public void setStock(Collection<Stock> stock) {
-		this.stock = stock;
+	public void setStocks(Collection<Stock> stocks) {
+		this.stocks = stocks;
 	}	
 	
 }

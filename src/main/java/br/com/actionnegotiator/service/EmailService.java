@@ -81,7 +81,7 @@ public class EmailService {
 	}
 	
 	public BigDecimal getRequestedValue(Transaction transaction) {
-		for (InvestmentRule investmentRule : transaction.getAccount().getInvestmentRule()) {
+		for (InvestmentRule investmentRule : transaction.getAccount().getInvestmentRules()) {
 			if (investmentRule.getCompany().getId().equals(transaction.getCompany().getId())) {
 				return transaction.getType().getValue(investmentRule);
 			}

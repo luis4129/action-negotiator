@@ -32,12 +32,13 @@ public class Stock {
 	
 	public Stock() {
 		super();
-	}
+	}	
 
 	public Stock(Account account, Company company, BigDecimal quantity) {
-		setAccount(account);
-		setCompany(company);
-		setQuantity(quantity);
+		super();
+		this.account = account;
+		this.company = company;
+		this.quantity = quantity;
 	}
 
 	public Long getId() {

@@ -34,15 +34,16 @@ public class InvestmentRule {
 	
 	public InvestmentRule() {
 		super();
-	}
+	}	
 
 	public InvestmentRule(Account account, Company company, BigDecimal purchasePrice, BigDecimal salePrice) {
-		setAccount(account);
-		setCompany(company);
-		setPurchasePrice(purchasePrice);
-		setSalePrice(salePrice);
+		super();
+		this.account = account;
+		this.company = company;
+		this.purchasePrice = purchasePrice;
+		this.salePrice = salePrice;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

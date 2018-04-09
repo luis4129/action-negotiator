@@ -14,9 +14,6 @@ public class CompanyService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
-
-	@Autowired
-	private InvestmentRuleService investmentRuleService;
 	
 	public CompanyService(CompanyRepository companyRepository) {
 		this.companyRepository = companyRepository;
@@ -25,16 +22,9 @@ public class CompanyService {
 	public Iterable<Company> findAll() {
 		return companyRepository.findAll();
 	}
-
-	public Company updateValue(Company company, BigDecimal value) throws DuplicateConstraintException {
-		company.setValue(value);
-		company = companyRepository.save(company);
-		investmentRuleService.monitor(company);
-		return company;
-	}
 	
 	public Company save(Company company) throws DuplicateConstraintException {
-		if (nameAlreadyExists(company.getName())) {
+		if (company.getId() == null && nameAlreadyExists(company.getName())) {
 			throw new DuplicateConstraintException("Já existe uma empresa com o nome " + company.getName() + " cadastrada.");
 		}		
 		return companyRepository.save(company);		

@@ -11,13 +11,10 @@ public class TransactionService {
 
 	@Autowired
 	private TransactionRepository transactionRepository;
-	
-	@Autowired
-	private EmailService emailService;
 
 	public Transaction save(Transaction transaction) {
 		transaction = transactionRepository.save(transaction);
-		emailService.notify(transaction);
+		
 		return transaction;
 	}
 
