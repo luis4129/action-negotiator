@@ -1,11 +1,4 @@
-# Compiled class file
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-/target/
+target/
+.classpath
+.project
+.settings/
