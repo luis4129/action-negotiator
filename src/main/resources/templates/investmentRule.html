@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Negociador de Ações</title>
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/investmentRule.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -53,13 +54,17 @@
 					<td><span th:text="${investmentRule.company.name}"></span></td>
 					<td><span th:text="${investmentRule.purchasePrice}"></span></td>
 					<td><span th:text="${investmentRule.salePrice}"></span></td>
+					<td hidden><span th:text="${investmentRule.account.id}"></span></td>
+					<td hidden><span th:text="${investmentRule.company.id}"></span></td>
 				</tr>
 
 			</table>
 		</div>
 		
-		<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Cadastrar</button>
-		<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Alterar</button>
+		<button type="button" onclick="emptyForm()" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Cadastrar</button>
+		<button type="button" onclick="loadForm()" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Alterar</button>
+		<button type="button" onclick="remove()" class="btn btn-dark">Delete</button>
+		
 			
 		
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

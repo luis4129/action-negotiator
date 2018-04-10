@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.actionnegotiator.enums.TransactionType;
 import br.com.actionnegotiator.exception.BigDecimalLengthException;
@@ -34,8 +33,16 @@ public class StockService {
 	@Autowired
 	private EmailService emailService;
 	
-	public StockService(StockRepository stockRepository) {
+	public StockService() {
+		super();
+	}
+	
+	public StockService(StockRepository stockRepository, AccountService accountService, EmailService emailService, TransactionService transactionService) {
+		super();
 		this.stockRepository = stockRepository;
+		this.accountService = accountService; 
+		this.emailService = emailService; 
+		this.transactionService = transactionService; 
 	}
 
 	public Stock save(Stock stock) throws DuplicateConstraintException, BigDecimalLengthException {
@@ -51,7 +58,6 @@ public class StockService {
 		return stockRepository.findByAccountAndCompany(account, company);
 	}
 	
-	@Transactional
 	public void purchaseStock(Account account, Company company) throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
 		BigDecimal quantity = account.getFund().divide(company.getValue(), 2, RoundingMode.HALF_EVEN);
 		account = updateAccountValue(account, BigDecimal.ZERO);
@@ -59,7 +65,6 @@ public class StockService {
 		this.save(new Stock(account, company, quantity));
 	}
 
-	@Transactional
 	public void sellStock(Stock stock) throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
 		BigDecimal value = stock.getQuantity().multiply(stock.getCompany().getValue());
 		Account account = updateAccountValue(stock.getAccount(), value);
@@ -73,8 +78,7 @@ public class StockService {
 	}
 	
 	private void registerAndNotify(TransactionType transactionType, Account account, Company company, BigDecimal quantity) {
-		Transaction transaction = new Transaction(account, company, Calendar.getInstance(), company.getValue(), quantity, transactionType, true);				
-		emailService.sendMailByTransaction(transactionService.save(transaction));
+		emailService.sendMailByTransaction(transactionService.save(new Transaction(account, company, Calendar.getInstance(), company.getValue(), quantity, transactionType, true)));
 	}
 	
 	private boolean stockAlreadyExists(Account account, Company company) {

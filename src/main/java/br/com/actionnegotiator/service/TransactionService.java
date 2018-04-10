@@ -12,7 +12,12 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	public TransactionService() {
+		super();
+	}
+	
 	public TransactionService(TransactionRepository transactionRepository) {
+		super();
 		this.transactionRepository = transactionRepository;
 	}
 	

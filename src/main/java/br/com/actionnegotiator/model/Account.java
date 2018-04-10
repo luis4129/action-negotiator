@@ -35,8 +35,15 @@ public class Account {
 	
 	public Account() {
 		super();
-	}
+	}	
 	
+	public Account(Long id, String email, BigDecimal fund) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.fund = fund;
+	}
+
 	public Account(String email, BigDecimal fund) {
 		super();
 		this.email = email;

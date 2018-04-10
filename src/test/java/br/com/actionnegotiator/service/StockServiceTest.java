@@ -23,6 +23,15 @@ public class StockServiceTest {
 	@MockBean
 	private StockRepository stockRepository;
 	
+	@MockBean
+	private AccountService accountService;
+	
+	@MockBean
+	private EmailService emailService;
+	
+	@MockBean
+	private TransactionService transactionService;
+			
 	private StockService stockService;
 	
 	private Stock stock;
@@ -32,12 +41,18 @@ public class StockServiceTest {
 	private Company company;
 	
 	private static final BigDecimal quantity = BigDecimal.TEN;
+	private static final Long accountId = 1L;
+	private static final String accountEmail = "teste@teste.com.br";
+	private static final BigDecimal accountFund = BigDecimal.valueOf(1000);
+	private static final Long companyId = 1L;
+	private static final String companyName = "Google";
+	private static final BigDecimal companyValue = BigDecimal.valueOf(10.80);
 	
 	@Before
 	public void setUp() {
-		stockService = new StockService(stockRepository);
-		account = new Account(1L);
-		company = new Company(1L);
+		stockService = new StockService(stockRepository, accountService, emailService, transactionService);
+		account = new Account(accountId, accountEmail, accountFund);
+		company = new Company(companyId, companyName, companyValue);
 		stock = new Stock(account, company, quantity);
 	}
 	
@@ -70,5 +85,31 @@ public class StockServiceTest {
 		stock.setQuantity(BigDecimal.valueOf(1111111111111111111L).multiply(BigDecimal.valueOf(1000)));
 		stockService.save(stock);		
 	}
+	
+	/*@Test
+	public void purchaseMustCreateStock() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		stockService.purchaseStock(account, company);
+		Mockito.verify(stockRepository).save(stock);
+	}*/
+	
+	@Test
+	public void purchaseMustUpdateAccountFund() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		stockService.purchaseStock(account, company);
+		account.setFund(BigDecimal.ZERO);
+		Mockito.verify(accountService).save(account);
+	}
+	
+	@Test
+	public void saleMustDeleteStock() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		stockService.sellStock(stock);
+		Mockito.verify(stockRepository).delete(stock);
+	}
+	
+	@Test
+	public void saleMustUpdateAccountFund() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		stockService.sellStock(stock);
+		account.setFund(quantity.multiply(companyValue));
+		Mockito.verify(accountService).save(account);
+	}			
 	
 }

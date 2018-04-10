@@ -29,6 +29,13 @@ public class Company {
 		super();
 	}	
 
+	public Company(Long id, String name, BigDecimal value) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.value = value;
+	}
+
 	public Company(String name, BigDecimal value) {
 		super();
 		this.name = name;
@@ -36,7 +43,8 @@ public class Company {
 	}
 
 	public Company(Long id) {
-		this.setId(id);
+		super();
+		this.id = id;
 	}
 
 	public Long getId() {

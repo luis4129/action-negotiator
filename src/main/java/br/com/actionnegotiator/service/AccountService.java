@@ -16,7 +16,12 @@ public class AccountService {
 	@Autowired
 	private AccountRepository accountRepository;
 	
+	public AccountService() {
+		super();
+	}
+	
 	public AccountService(AccountRepository accountRepository) {
+		super();
 		this.accountRepository = accountRepository;
 	}
 

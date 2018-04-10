@@ -16,7 +16,12 @@ public class CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 	
+	public CompanyService() {
+		super();
+	}
+	
 	public CompanyService(CompanyRepository companyRepository) {
+		super();
 		this.companyRepository = companyRepository;
 	}
 

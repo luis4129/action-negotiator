@@ -20,6 +20,7 @@ import br.com.actionnegotiator.exception.StringLengthException;
 import br.com.actionnegotiator.model.Account;
 import br.com.actionnegotiator.model.Company;
 import br.com.actionnegotiator.model.InvestmentRule;
+import br.com.actionnegotiator.model.Stock;
 import br.com.actionnegotiator.model.Transaction;
 import br.com.actionnegotiator.repository.InvestmentRuleRepository;
 
@@ -29,7 +30,12 @@ public class InvestmentRuleServiceTest {
 	@MockBean
 	private InvestmentRuleRepository investmentRuleRepository;
 	
+	@MockBean
+	private StockService stockService;
+	
 	private InvestmentRuleService investmentRuleService;
+	
+	private Collection<InvestmentRule> investmentRules;
 	
 	private InvestmentRule investmentRule;
 	
@@ -39,15 +45,26 @@ public class InvestmentRuleServiceTest {
 	
 	private Transaction transaction;
 	
+	private Stock stock;
+	
 	private static final BigDecimal purchasePrice = BigDecimal.valueOf(10.40);
 	private static final BigDecimal salePrice = BigDecimal.valueOf(10.60);
+	private static final Long accountId = 1L;
+	private static final String accountEmail = "teste@teste.com.br";
+	private static final BigDecimal accountFund = BigDecimal.valueOf(1000);
+	private static final Long companyId = 1L;
+	private static final String companyName = "Google";
+	private static final BigDecimal companyValue = BigDecimal.valueOf(10.80);
 	
 	@Before
 	public void setUp() {
-		investmentRuleService = new InvestmentRuleService(investmentRuleRepository);
-		account = new Account(1L);
-		company = new Company(1L);
+		investmentRuleService = new InvestmentRuleService(investmentRuleRepository, stockService);
+		account = new Account(accountId, accountEmail, accountFund);
+		company = new Company(companyId, companyName, companyValue);
+		stock = new Stock(account, company, BigDecimal.valueOf(100));
 		investmentRule = new InvestmentRule(null, account, company, purchasePrice, salePrice);
+		investmentRules = new ArrayList<InvestmentRule>();
+		investmentRules.add(investmentRule);
 	}
 	
 	@Test
@@ -99,6 +116,57 @@ public class InvestmentRuleServiceTest {
 	public void mustRespectSalePriceLength() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
 		investmentRule.setSalePrice(BigDecimal.valueOf(1111111111111111111L).multiply(BigDecimal.valueOf(1000)));
 		investmentRuleService.save(investmentRule);		
+	}
+	
+	@Test
+	public void mustPurchaseStock() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		company.setValue(BigDecimal.valueOf(10.20));		
+		Mockito.when(investmentRuleRepository.findByCompany(company)).thenReturn(investmentRules);		
+		investmentRuleService.monitor(company);
+		Mockito.verify(stockService).purchaseStock(account, company);		
+	}
+	
+	@Test
+	public void mustRespectAccountFundOnPurchase() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		company.setValue(BigDecimal.valueOf(10.20));
+		account.setFund(BigDecimal.ZERO);
+		Mockito.when(investmentRuleRepository.findByCompany(company)).thenReturn(investmentRules);		
+		investmentRuleService.monitor(company);
+		Mockito.verify(stockService, Mockito.never()).purchaseStock(account, company);		
+	}
+	
+	@Test
+	public void mustRespectPurchasePrice() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		company.setValue(BigDecimal.valueOf(10.50));
+		Mockito.when(investmentRuleRepository.findByCompany(company)).thenReturn(investmentRules);		
+		investmentRuleService.monitor(company);
+		Mockito.verify(stockService, Mockito.never()).purchaseStock(account, company);		
+	}
+	
+	@Test
+	public void mustSellStock() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		Mockito.when(investmentRuleRepository.findByCompany(company)).thenReturn(investmentRules);		
+		Mockito.when(stockService.findByAccountAndCompany(account, company)).thenReturn(stock);
+		investmentRuleService.monitor(company);
+		Mockito.verify(stockService).sellStock(stock);		
+	}
+	
+	@Test
+	public void mustRespectSalePrice() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		company.setValue(BigDecimal.valueOf(10.50));
+		Mockito.when(investmentRuleRepository.findByCompany(company)).thenReturn(investmentRules);		
+		Mockito.when(stockService.findByAccountAndCompany(account, company)).thenReturn(stock);
+		investmentRuleService.monitor(company);
+		Mockito.verify(stockService, Mockito.never()).sellStock(stock);		
+	}
+	
+	@Test
+	public void canOnlySellExistingStock() throws DuplicateConstraintException, StringLengthException, BigDecimalLengthException {
+		stock = null;
+		Mockito.when(investmentRuleRepository.findByCompany(company)).thenReturn(investmentRules);		
+		Mockito.when(stockService.findByAccountAndCompany(account, company)).thenReturn(stock);
+		investmentRuleService.monitor(company);
+		Mockito.verify(stockService, Mockito.never()).sellStock(stock);		
 	}
 	
 }
