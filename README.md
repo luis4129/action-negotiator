@@ -69,7 +69,7 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/action_negotiator_db
 When the application ir ran, it port `4129` will be used, since it's a pretty non standard port, and shouldn't be any conflict. If necessary, you can just change the following line:
 
 ```
-server.port=**4129**
+server.port=4129
 ```
 
 # Building the .jar
