@@ -7,7 +7,7 @@
 *Entities:*
 
 - `Account` represents the investing account.
-- `Company` repressents the company on which the stocks will be sold.
+- `Company` represents the company on which the stocks will be sold.
 - `InvestmentRule` represents a set of rules that will be followed in order for an accouunt to invest in a company automatically.
 - `Stock` represents companies stocks that have been bought by an accoount.
 - `Transaction` represents business transactions, containing logs of stocks bought and sold.
