@@ -1,87 +1,109 @@
-# Informaçoes sobre o projeto
+# Action Negotiator
 
-*Descrição:*
+*Description:*
 
-- Negociador de ações é uma aplicação que foi desenvolvida como desafio, utilizando Spring Boot, um framework Java.
+- Action negotiator it's an application developted as a challenge using Spring Boot, a Java Framework.
 
-*Entidades:*
+*Entities:*
 
-- Account (Conta) representa a conta que irá investir.
-- Company (Empresa) representa a empresa terá as ações vendidas.
-- InvestmentRule (Regra de Investimento) representa as regras que serão obedecidas para uma conta investir em uma empresa.
-- Stock (Ação) representa ações de uma empresa que foram compradas por uma conta.
-- Transaction (Transação) representa compras e vendas realizadas.
+- `Account` represents the investing account.
+- `Company` repressents the company on which the stocks will be sold.
+- `InvestmentRule` represents a set of rules that will be followed in order for an accouunt to invest in a company automatically.
+- `Stock` represents companies stocks that have been bought by an accoount.
+- `Transaction` represents business transactions, containing logs of stocks bought and sold.
 
-*Relacionamentos mapeados:*
+*Mapped relationships:*
 
-- Uma **conta** possui uma ou mais **regras de investimento**.
-- Uma **conta** possui uma ou mais **ações**.
-- Uma **regra de investimento** pertence a uma **conta** e **empresa**.
-- Uma **ação** pertence a uma **conta** e **empresa**.
-- Uma ou mais **transações** pertencem a uma **conta** e **empresa**.
+- An **account** can have multiple **investment rules**.
+- An **account** can have multiple **stocks**.
+- A **investment rule** belongs to an **account** and a **company**.
+- A **stock** belongs to an **account** and a **company**.
+- Multiple **transactions** can belong to the same **account** and **company**.
 
-*Arquitetura utilizada:*
+*Architecture:*
 
-- Controller - Recebe a request, monta os objetos, direciona ao devido Service.
-- Service - Realiza todas regras de backend, e encaminha para uma interface Repository
-- Repository - Interface responsável pelo acesso aos dados no banco de dados.
-- Model - Modelagem das entidades;
-- Enums - Modelagem dos enums;
-- Exception - Exceptions customizadas;
-- Util - Código reutilizavel pelo resto da aplicação;
+- Controller - Receives the requests, builds the objects, directs it to the proper Service.
+- Service - Prepares the objects following the business rules, and send it to the repoistory interface.
+- Repository - Interface on which the appplication acesses the database.
+- Model - Entities modeling;
+- Enums - Enums modeling;
+- Exception - Custom exceptions;
+- Util - Code to be used by the entire project;
 
 *Frameworks:*
 
-- Para backend foi somente utilizado o Spring Boot, que foi o framework solicitado pelo desafio.
-- Para frontend foi utilizado Bootstrap, só para o CRUD ficar mais apresentável, embora não foi dada muita atenção no frontend da aplicação.
+- Backend: Only SpringBoot was used, as requests by the challenge.
+- Frontend: Bootstrap in order to make the application a little more presentable, although not much attention was spent on it.
 
-# Pré-requisitos
+# Prerequisites
 
-- PostgreSQL 10.3. Link para download: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-- Maven. Link para download: http://ftp.unicamp.br/pub/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
-- Git. Link para downlaod: https://git-scm.com/download/win
+- PostgreSQL 10.3. Download link: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+- Maven. Download link: http://ftp.unicamp.br/pub/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+- Git. Download link: https://git-scm.com/download/win
 
-# Baixando o repositório
+# Downloading the repository
 
-Abra o Git Bash no diretório que deseja baixar o repositório e digite o comando abaixo:
-- $ git clone https://github.com/luis4129/action-negotiator.git
+Open the Git Bash inside the directory on which you want to download the repository, and execute the following command:
+```
+$ git clone https://github.com/luis4129/action-negotiator.git
+```
 
-# Configurando o arquivo application.properties
+# Setting the application.properties file
 
-Para contexto, o arquivo está localizado em action-negotiator/src/main/resources/application.properties.
+The file is located at `action-negotiator/src/main/resources/application.properties`.
 
-Na configuração do Postgres, foi considerado a porta padrão "5432", o usuário "postgres" e a senha "root". Caso o Postgres esteja configurado de alguma forma diferente na máquina a ser executada, será necessário ajustar o arquivo application.properties própriamente, nas linhas abaixo:
+On the Postgres setttings, it was used the default port `5432`, user `postgres` and password `root`. If your Postgres setttings are different in any way, there will be a need to update the file on the lines of code below:
 
-- spring.datasource.username=**postgres**
-- spring.datasource.password=**root**
-- spring.datasource.url=jdbc:postgresql://localhost:**5432**/action_negotiator_db
+```
+spring.datasource.username=**postgres**
+spring.datasource.password=**root**
+spring.datasource.url=jdbc:postgresql://localhost:**5432**/action_negotiator_db
+```
 
-Criar um banco de dados com o nome "action_negotiator_db", ou caso prefira outro nome, basta ajustar a linha abaixo:
-- spring.datasource.url=jdbc:postgresql://localhost:5432/**action_negotiator_db**
+Create a database with the name "action_negotiator_db". If you want to use another name, just update the file on the line of code below:
 
-Ao executar a aplicação, a mesma será executada na porta 4129, visto que é uma porta pouco utilizada. Caso necessário o uso de outra porta, basta ajustar a linha abaixo:
-- server.port=**4129**
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/**action_negotiator_db**
+```
 
-# Gerando o JAR
+When the application ir ran, it port `4129` will be used, since it's a pretty non standard port, and shouldn't be any conflict. If necessary, you can just change the following line:
 
-Caso ainda estiver com o Git Bash utilizado anteriormente, execute o comando abaixo para entrar no diretório do repositório clonado:
-- $ cd action-negotiator
+```
+server.port=**4129**
+```
 
-Caso contrário, basta abrir outro Git Bash no diretório do repositório clonado.
+# Building the .jar
 
-Após isso, basta executar o comando abaixo para gerar o JAR do repositório:
-- $ mvn package
+If the previous Git Bash is still open, execute the following statement to enter the cloned repository directory:
 
-# Executando o JAR
+```
+$ cd action-negotiator
+```
 
-Agora só falta executar, execute o comando abaixo para entrar no diretório do JAR criado:
-- $ cd target
+Otherwisde, just open another Git Bash at the cloned repository directory.
 
-Agora basta executar o JAR, com o comando abaixo:
-- $ java -jar actionNegotiator-0.0.1-SNAPSHOT.jar
+After that, just execute the following command to generate the `.jar` file:
 
-# Pronto!
-Agora é só abrir a URL abaixo:
+```
+$ mvn package
+```
+
+# Running the .jar
+
+Run the following statement to enter the `.jar` directory:
+
+```
+$ cd target
+```
+
+Now, all that's left is to run the `.jar` file with the statement below:
+
+```
+$ java -jar actionNegotiator-0.0.1-SNAPSHOT.jar
+```
+
+# Done!
+Just open the URL below, it should be up and running:
 http://localhost:4129/
 
 
