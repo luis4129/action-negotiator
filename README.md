@@ -55,15 +55,15 @@ The file is located at `action-negotiator/src/main/resources/application.propert
 On the Postgres setttings, it was used the default port `5432`, user `postgres` and password `root`. If your Postgres setttings are different in any way, there will be a need to update the file on the lines of code below:
 
 ```
-spring.datasource.username=**postgres**
-spring.datasource.password=**root**
-spring.datasource.url=jdbc:postgresql://localhost:**5432**/action_negotiator_db
+spring.datasource.username=postgres
+spring.datasource.password=root
+spring.datasource.url=jdbc:postgresql://localhost:5432/action_negotiator_db
 ```
 
 Create a database with the name "action_negotiator_db". If you want to use another name, just update the file on the line of code below:
 
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/**action_negotiator_db**
+spring.datasource.url=jdbc:postgresql://localhost:5432/action_negotiator_db
 ```
 
 When the application ir ran, it port `4129` will be used, since it's a pretty non standard port, and shouldn't be any conflict. If necessary, you can just change the following line:
