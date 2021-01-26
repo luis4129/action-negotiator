@@ -1,4 +1,4 @@
-# Action Negotiator
+# About the Project
 
 *Description:*
 
